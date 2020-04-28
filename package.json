@@ -6,6 +6,10 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "hugo --gc --minify"
+    "build": "hugo --gc --minify",
+    "start": "hugo server"
+  },
+  "dependencies": {
+    "strava-v3": "^2.0.5"
   }
 }
