@@ -1,0 +1,6 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "rain-or-shine"
+
+[[params.javascript]]
+  link = "js/script.js"

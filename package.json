@@ -1,0 +1,11 @@
+{
+  "name": "rain-or-shine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JonHenningsson/rain-or-shine",
+  "author": "Jon Henningsson <jon.henningsson@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "hugo --gc --minify"
+  }
+}
