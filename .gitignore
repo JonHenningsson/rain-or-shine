@@ -1,9 +1,11 @@
-notes.txt
-
 # Local Netlify folder
 .netlify
 
 # dependency directories
 node_modules
 
+# build
 public
+
+# yarn
+yarn-error.log

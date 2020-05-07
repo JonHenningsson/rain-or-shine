@@ -1,6 +1,25 @@
-baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "rain-or-shine"
+description = "rain-or-shine is a weather app for Strava"
+
+[params]
+subtitle = "Add weather information to Strava activities"
 
 [[params.javascript]]
   link = "js/script.js"
+
+[params.strava]
+  oauth_url =       "https://www.strava.com/oauth/authorize"
+  # replace with your strava api client id or override with env variable HUGO_PARAMS_STRAVA_CID
+  cid =             "PLACEHOLDER_STRAVA_API_CLIENT_ID"
+  #cb_base_url =     "http://localhost:8888/"
+  redirect_path =   "connect/callback"
+  response_type =   "code"
+  approval_prompt = "auto"
+  scope =           "read,activity:write,activity:read"
+  state =           "not_used"
+
+[params.pages]
+  success =   "/connect/success/"
+  error =     "/connect/error/"
+  callback =  "/connect/callback/"

@@ -1,10 +1,14 @@
-{{ partial "header.html" . }}
 
-<section id=content>
-  <p>hello</p>
-  <a href="https://www.strava.com/oauth/authorize">Authorize with Strava</a>
+{{ define "main" }}
 
-</section>
+<div>
+  {{.Content}}
+</div>
 
+<div>
 
-{{ partial "footer.html" . }}
+{{ partial "strava-oauth-form.html" . }}
+
+</div>
+
+{{ end }}

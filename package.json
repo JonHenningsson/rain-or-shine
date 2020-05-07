@@ -10,6 +10,7 @@
     "start": "hugo server"
   },
   "dependencies": {
+    "faunadb": "^2.13.1",
     "strava-v3": "^2.0.5"
   }
 }

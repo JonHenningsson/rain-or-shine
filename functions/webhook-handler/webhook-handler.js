@@ -1,9 +1,11 @@
+const strava = require('strava-v3')
+
 exports.handler = async (event, context) => {
   try {
-    //const timetable = new TimeTable2Departing(process.env.resrobot_timetable_api_key);
-    //let stopid = event.queryStringParameters.stopid;
+    const payload = await strava.athlete.get({});
+    console.log(payload);
 
-    //let timetable_result = await timetable.timetable(stopid);
+
     console.log("do stuff");
 
     return {
