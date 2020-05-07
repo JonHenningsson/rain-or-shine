@@ -3,7 +3,10 @@
 ## Setup
 
 1. Setup FaunaDB integration
-  - Create a new database and a SERVER KEY
+  - Create a new database
+  - Create a new collection User
+  - Create a new index "user_unique_athlete_id", terms = "data.athlete_id", Unique = checked
+  - Create a new SERVER KEY
   - Set environment variable FAUNADB_API_SERVER_SECRET to SERVER KEY
 
 2. Setup Strava integration
@@ -16,7 +19,6 @@
 
 3. Netlify Dev locally
   - yarn install
-  - netlify dev
+  - netlify link / init
   - Uncomment cb_base_url in config.toml
-
-4.
+  - netlify dev
