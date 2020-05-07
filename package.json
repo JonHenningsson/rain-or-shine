@@ -6,11 +6,11 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "hugo --gc --minify",
+    "build": "yarn install && hugo --gc --minify",
     "start": "hugo server"
   },
   "dependencies": {
-    "mystrava": "file:functions/common/mystrava",
+    "mystrava": "file:functions/common/mystrava/",
     "myuserdb": "file:functions/common/myuserdb/"
   }
 }
