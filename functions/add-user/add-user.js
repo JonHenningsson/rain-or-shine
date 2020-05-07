@@ -1,6 +1,5 @@
-//const util = require('util')
-const strava_config = require('../strava-config');
-const UserDB = require('../userdb');
+const mystrava = require('mystrava');
+const myuserdb = require('myuserdb');
 
 exports.handler = async (event, context) => {
   try {
@@ -12,7 +11,7 @@ exports.handler = async (event, context) => {
     // Strava
     // initialize strava object and obtain access token
     try {
-      var strava_generic = strava_config.initStrava();
+      var strava_generic = mystrava.initStrava();
 
       let code = event.queryStringParameters.code;
       let scope = event.queryStringParameters.scope;
@@ -27,13 +26,14 @@ exports.handler = async (event, context) => {
       var strava = new strava_generic.client(access_token);
       payload = await strava.athlete.get({});
       var athlete_id = payload.id;
+      console.log(payload);
 
     } catch (err) {
       throw "Failed to get Strava athlete information";
     }
 
     try {
-      const udb = new UserDB();
+      const udb = new myuserdb();
 
       // Check if user exists
       try {
