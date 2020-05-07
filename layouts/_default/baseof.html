@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    {{ if .Site.Params.description }}<meta name="description" content="{{ .Site.Params.description }}">{{ end }}
+
+    <title>
+      {{ block "title" . }}
+      {{ .Site.Title }}
+    {{ end }}
+  </title>
+  </head>
+  <body>
+    <!-- Code that all your templates share, like a header -->
+    <h1 style="text-align: center;"><a href="/">{{ .Site.Title }}</a></h1>
+    <h3 style="text-align: center;">{{.Site.Params.Subtitle }}</h3>
+    <hr/>
+
+    {{ block "main" . }}
+    {{ end }}
+
+    {{ block "footer" . }}
+    {{ "<!-- JS -->" | safeHTML }}
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
+    {{ range .Site.Params.javascript}}
+    <script src="{{ .link | relURL }}"></script>
+    {{ end }}
+
+    {{ end }}
+  </body>
+</html>
