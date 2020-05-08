@@ -1,6 +1,6 @@
 <form action="{{ .Site.Params.strava.oauth_url }}" method="GET">
   <input type="hidden" name="client_id" value="{{.Site.Params.strava.cid}}">
-  <input type="hidden" name="redirect_uri" value="{{.Site.Params.strava.redirect_baseurl}}{{.Site.Params.strava.redirect_path}}">
+  <input type="hidden" name="redirect_uri" value="{{.Site.Params.strava.redirectbaseurl}}{{.Site.Params.strava.redirect_path}}">
   <input type="hidden" name="response_type" value="{{.Site.Params.strava.response_type}}">
   <input type="hidden" name="approval_prompt" value="{{.Site.Params.strava.approval_prompt}}">
   <input type="hidden" name="scope" value="{{.Site.Params.strava.scope}}">
