@@ -6,7 +6,8 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run hugo --gc --minify",
+    "devbuild": "yarn run hugo --gc --minify",
+    "build": "hugo --gc --minify",
     "start": "yarn run hugo server"
   },
   "dependencies": {

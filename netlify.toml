@@ -1,12 +1,20 @@
+# default build settings
 [build]
   functions = "./functions"
   publish = "public"
-  command = "yarn build"
-
+  command = "yarn devbuild"
 [build.environment]
   HUGO_VERSION = "0.70.0"
   YARN_VERSION = "1.22.4"
+  NODE_ENV = "development"
 
+# production build settings
+[context.production]
+  command = "yarn build"
+[context.production.environment]
+  NODE_ENV = "production"
+
+# dev settings
 [dev]
   command = "yarn start"
   autoLaunch = true
