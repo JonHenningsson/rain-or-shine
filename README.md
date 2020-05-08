@@ -13,9 +13,7 @@ What things you need to install the software and how to install them
 - Strava account
 - FaunaDB account
 - git
-- netlify-cli
 - yarn
-- hugo
 
 
 ```
@@ -51,7 +49,7 @@ cd rain-or-shine && yarn install
 
 
 5. Run project locally
-  - netlify dev
+  - yarn run netlify dev --context=development
 
 3. Netlify Dev locally
   - yarn install
