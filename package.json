@@ -6,11 +6,15 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn install && hugo --gc --minify",
-    "start": "hugo server"
+    "build": "yarn run hugo --gc --minify",
+    "start": "yarn run hugo server"
   },
   "dependencies": {
     "mystrava": "file:functions/common/mystrava/",
     "myuserdb": "file:functions/common/myuserdb/"
+  },
+  "devDependencies": {
+    "hugo-bin": "^0.58.0",
+    "netlify-cli": "^2.50.0"
   }
 }

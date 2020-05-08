@@ -9,25 +9,49 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 What things you need to install the software and how to install them
+
+- Strava account
+- FaunaDB account
+- git
+- netlify-cli
+- yarn
+- hugo
+
+
 ```
 Give examples
 ```
 
+### Setup & Run Locally
+1. Clone the repository
 
-1. Setup FaunaDB integration
+```
+git clone https://github.com/JonHenningsson/rain-or-shine.git
+```
+
+2. Enter the repo and install the dependencies
+
+```
+cd rain-or-shine && yarn install
+```
+
+3. Setup FaunaDB integration
   - Create a new database
   - Create a new collection User
   - Create a new index "user_unique_athlete_id", terms = "data.athlete_id", Unique = checked
   - Create a new SERVER KEY
   - Set environment variable FAUNADB_API_SERVER_SECRET to SERVER KEY
 
-2. Setup Strava integration
+4. Setup Strava integration
   - Create a new API application and note down Client ID and Client Secret
   - Set environment variables:
     - STRAVA_API_CLIENT_ID to Client ID
     - STRAVA_API_CLIENT_SECRET to Client Secret
     - HUGO_PARAMS_STRAVA_CID to Client ID
 
+
+5. Run project locally
+  - netlify dev
 
 3. Netlify Dev locally
   - yarn install
