@@ -26,7 +26,6 @@ exports.handler = async (event, context) => {
       var strava = new strava_generic.client(access_token);
       payload = await strava.athlete.get({});
       var athlete_id = payload.id;
-      console.log(payload);
 
     } catch (err) {
       throw "Failed to get Strava athlete information";
