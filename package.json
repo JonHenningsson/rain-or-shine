@@ -6,9 +6,11 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "devbuild": "yarn run hugo --gc --minify",
-    "build": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} && hugo --gc --minify",
-    "start": "yarn run hugo server"
+    "devbuild": "yarn run devenv && yarn run hugo --gc --minify",
+    "build": "yarn run prodenv && hugo --gc --minify",
+    "start": "yarn run devenv && yarn run hugo server",
+    "prodenv": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} HUGO_PARAMS_STRAVA_CID={STRAVA_API_CLIENT_ID}",
+    "devenv": "export HUGO_PARAMS_STRAVA_CID={STRAVA_API_CLIENT_ID}"
   },
   "dependencies": {
     "mystrava": "file:functions/common/mystrava/",
