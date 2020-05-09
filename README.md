@@ -49,12 +49,11 @@ cd rain-or-shine && yarn install
 
 5. Set the environment variables
 ```
-export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret HUGO_PARAMS_STRAVA_CID=your_strava_client_id STRAVA_API_CLIENT_ID=your_strava_client_id STRAVA_API_CLIENT_SECRET=your_strava_client_secret
+export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret STRAVA_API_CLIENT_ID=your_strava_client_id STRAVA_API_CLIENT_SECRET=your_strava_client_secret
 ```
 
-
 5. Run project locally
-  - yarn run netlify dev --context=development
+  - yarn run netlify dev
 
 3. Netlify Dev locally
   - yarn install
