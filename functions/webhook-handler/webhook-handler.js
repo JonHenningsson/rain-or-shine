@@ -2,11 +2,7 @@ const strava = require('strava-v3')
 
 exports.handler = async (event, context) => {
   try {
-    const payload = await strava.athlete.get({});
-    console.log(payload);
-
-
-    console.log("do stuff");
+    console.log("EVENT: \n" + JSON.stringify(event, null, 2))
 
     return {
       statusCode: 200,

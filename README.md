@@ -54,9 +54,3 @@ export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret STRAVA_API_CLIENT_ID=y
 
 5. Run project locally
   - yarn run netlify dev
-
-3. Netlify Dev locally
-  - yarn install
-  - netlify link / init
-  - Uncomment cb_base_url in config.toml
-  - netlify dev
