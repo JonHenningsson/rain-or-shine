@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "devbuild": "yarn run hugo --gc --minify",
-    "build": "hugo --gc --minify",
+    "build": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} && hugo --gc --minify",
     "start": "yarn run hugo server"
   },
   "dependencies": {

@@ -14,7 +14,7 @@ What things you need to install the software and how to install them
 - FaunaDB account
 - git
 - yarn
-
+- node
 
 ```
 Give examples
@@ -46,6 +46,11 @@ cd rain-or-shine && yarn install
     - STRAVA_API_CLIENT_ID to Client ID
     - STRAVA_API_CLIENT_SECRET to Client Secret
     - HUGO_PARAMS_STRAVA_CID to Client ID
+
+5. Set the environment variables
+```
+export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret HUGO_PARAMS_STRAVA_CID=your_strava_client_id STRAVA_API_CLIENT_ID=your_strava_client_id STRAVA_API_CLIENT_SECRET=your_strava_client_secret
+```
 
 
 5. Run project locally

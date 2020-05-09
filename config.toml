@@ -14,7 +14,7 @@ subtitle = "Add weather information to Strava activities"
   cid =             "PLACEHOLDER_STRAVA_API_CLIENT_ID"
   # override with env variable HUGO_PARAMS_STRAVA_REDIRECTBASEURL
   redirectbaseurl = "http://localhost:8888/"
-  redirect_path =   "connect/callback"
+  redirect_path =   "/connect/callback/"
   response_type =   "code"
   approval_prompt = "auto"
   scope =           "read,activity:write,activity:read"
