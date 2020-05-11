@@ -11,7 +11,8 @@ exports.handler = async (event, context) => {
     // Strava
     // initialize strava object and obtain access token
     try {
-      var strava_generic = mystrava.initStrava();
+      const mys = new mystrava();
+      var strava_generic = await mys.strava_v3();
 
       let code = event.queryStringParameters.code;
       let scope = event.queryStringParameters.scope;
@@ -28,6 +29,7 @@ exports.handler = async (event, context) => {
       var athlete_id = payload.id;
 
     } catch (err) {
+      console.log(err);
       throw "Failed to get Strava athlete information";
     }
 
