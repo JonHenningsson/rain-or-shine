@@ -2,14 +2,14 @@ const mystrava = require('mystrava');
 
 exports.handler = async (event, context) => {
   try {
+    console.log("EVENT: \n" + JSON.stringify(event, null, 2));
+    const mys = new mystrava();
 
     // default response data
     var statusCode = 200;
     var body;
 
-    var verify_token_req = event.queryStringParameters.hub.verify_token;
-    const mys = new mystrava();
-
+    var verify_token_req = event.queryStringParameters["hub.verify_token"];
 
     if (mys.is_validation_req(event)) {
       if (verify_token_req == mys.verify_token) {
@@ -29,7 +29,6 @@ exports.handler = async (event, context) => {
     }
 
   } catch (err) {
-    console.log("EVENT: \n" + JSON.stringify(event, null, 2))
 
     console.log(err);
     return { statusCode: 500, body: err.toString() }
