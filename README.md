@@ -38,14 +38,9 @@ cd rain-or-shine && yarn install
   - Create a new collection User
   - Create a new index "user_unique_athlete_id", terms = "data.athlete_id", Unique = checked
   - Create a new SERVER KEY
-  - Set environment variable FAUNADB_API_SERVER_SECRET to SERVER KEY
 
 4. Setup Strava integration
   - Create a new API application and note down Client ID and Client Secret
-  - Set environment variables:
-    - STRAVA_API_CLIENT_ID to Client ID
-    - STRAVA_API_CLIENT_SECRET to Client Secret
-    - HUGO_PARAMS_STRAVA_CID to Client ID
 
 5. Set the environment variables
 ```
@@ -53,4 +48,14 @@ export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret STRAVA_API_CLIENT_ID=y
 ```
 
 5. Run project locally
-  - yarn run netlify dev
+
+Now you can run it locally and test the authentication
+```
+yarn run netlify dev
+```
+
+####
+
+- test add user
+- test create subscription request webhook handler
+- test new event activity

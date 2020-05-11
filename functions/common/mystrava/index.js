@@ -29,7 +29,6 @@ class MyStrava {
     )
   };
 
-
   strava_v3 = () => {
     return new Promise(
       (resolve, reject) => {

@@ -2,7 +2,7 @@ const mystrava = require('mystrava');
 
 exports.handler = async (event, context) => {
   try {
-    // default response data
+    // default success response data
     var response = {
       "statusCode": 200
     }
@@ -14,7 +14,6 @@ exports.handler = async (event, context) => {
     if (await mys.is_validation_req(event)) {
 
       if (verify_token_req == mys.verify_token) {
-        console.log("Valid validation request!");
         response.headers = {
             "Content-Type": "application/json"
           },

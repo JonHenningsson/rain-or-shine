@@ -7,9 +7,11 @@
   "license": "MIT",
   "scripts": {
     "devbuild": "export HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && yarn run hugo --gc --minify",
-    "build": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && hugo --gc --minify",
+    "build": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && hugo --gc --minify && node scripts/strava-subscribe-list",
     "start": "export HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && yarn run hugo server",
-    "subscribe": "node scripts/strava-subscribe"
+    "subscribe": "node scripts/strava-subscribe-create",
+    "subscriptions": "node scripts/strava-subscribe-list",
+    "unsubscribe": "node scripts/strava-subscribe-delete"
   },
   "dependencies": {
     "mystrava": "file:functions/common/mystrava/",
