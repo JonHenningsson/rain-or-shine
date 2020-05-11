@@ -4,7 +4,7 @@ exports.handler = async (event, context) => {
   try {
     // default response data
     var response = {
-      statusCode = 200
+      "statusCode": 200
     }
 
     var verify_token_req = event.queryStringParameters["hub.verify_token"];
@@ -15,10 +15,10 @@ exports.handler = async (event, context) => {
 
       if (verify_token_req == mys.verify_token) {
         console.log("Valid validation request!");
-        response.headers: {
+        response.headers = {
             "Content-Type": "application/json"
           },
-          response.body: JSON.stringify({
+          response.body = JSON.stringify({
             "hub.challenge": challenge
           });
       } else {
