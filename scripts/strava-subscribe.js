@@ -1,4 +1,5 @@
 (async function() {
+  const mystrava = require('mystrava');
 
   const mys = new mystrava();
   var strava_generic = await mys.strava_v3();
@@ -9,7 +10,7 @@
   let payload =
     await strava_generic.pushSubscriptions.create({
       "callback_url": callback_url,
-      "verify_token": strava_generic.verify_token;
+      "verify_token": mys.verify_token
     });
   //var access_token = payload.access_token;
   //var refresh_token = payload.refresh_token;
