@@ -17,7 +17,7 @@ class MyStrava {
       (resolve, reject) => {
         if (
           event.httpMethod == "GET" &&
-          event.queryStringParameters["hubmode"] == "subscribe" &&
+          event.queryStringParameters["hub.mode"] == "subscribe" &&
           event.queryStringParameters["hub.challenge"] &&
           event.queryStringParameters["hub.verify_token"]
         ) {
