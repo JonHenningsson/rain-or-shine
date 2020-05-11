@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
     var challenge = event.queryStringParameters["hub.challenge"];
 
     const mys = new mystrava();
-    if (mys.is_validation_req(event)) {
+    if (await mys.is_validation_req(event)) {
 
       if (verify_token_req == mys.verify_token) {
         console.log("Valid validation request!");

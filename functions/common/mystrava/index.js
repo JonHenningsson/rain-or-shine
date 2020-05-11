@@ -17,9 +17,9 @@ class MyStrava {
       (resolve, reject) => {
         if (
           event.httpMethod == "GET" &&
-          event.queryStringParameters.hub.mode == "subscribe" &&
-          event.queryStringParameters.hub.challenge &&
-          event.queryStringParameters.hub.verify_token
+          event.queryStringParameters["hubmode"] == "subscribe" &&
+          event.queryStringParameters["hub.challenge"] &&
+          event.queryStringParameters["hub.verify_token"]
         ) {
           resolve(true);
         } else {
@@ -36,7 +36,7 @@ class MyStrava {
         strava.config({
           "client_id": this.client_id,
           "client_secret": this.client_secret
-        });    
+        });
         resolve(strava);
       }
     )
