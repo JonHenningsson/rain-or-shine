@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
     var statusCode = 200;
     var body;
 
-    var verify_token_req = event.queryStringParameters.hub.verify_token
+    var verify_token_req = event.queryStringParameters.hub.verify_token;
     const mys = new mystrava();
 
 
@@ -18,7 +18,6 @@ exports.handler = async (event, context) => {
 
     }
 
-    console.log("EVENT: \n" + JSON.stringify(event, null, 2))
 
     return {
       statusCode: statusCode,
@@ -30,6 +29,8 @@ exports.handler = async (event, context) => {
     }
 
   } catch (err) {
+    console.log("EVENT: \n" + JSON.stringify(event, null, 2))
+
     console.log(err);
     return { statusCode: 500, body: err.toString() }
   }
