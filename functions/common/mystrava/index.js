@@ -3,6 +3,7 @@ const strava = require('strava-v3');
 const STRAVA_API_CLIENT_ID = process.env.STRAVA_API_CLIENT_ID;
 const STRAVA_API_CLIENT_SECRET = process.env.STRAVA_API_CLIENT_SECRET;
 const STRAVA_VERIFY_TOKEN = process.env.STRAVA_VERIFY_TOKEN;
+const STRAVA_REDIRECT_URI = process.env.STRAVA_REDIRECT_URI;
 
 
 class MyStrava {
@@ -10,6 +11,7 @@ class MyStrava {
     this.client_id = STRAVA_API_CLIENT_ID;
     this.client_secret = STRAVA_API_CLIENT_SECRET;
     this.verify_token = STRAVA_VERIFY_TOKEN;
+    this.redirect_uri = STRAVA_REDIRECT_URI;
   }
 
   is_validation_req = (event) => {
@@ -34,7 +36,8 @@ class MyStrava {
       (resolve, reject) => {
         strava.config({
           "client_id": this.client_id,
-          "client_secret": this.client_secret
+          "client_secret": this.client_secret,
+          "redirect_uri": this.redirect_uri
         });
         resolve(strava);
       }

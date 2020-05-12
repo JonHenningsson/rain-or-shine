@@ -4,7 +4,8 @@ exports.handler = async (event, context) => {
   try {
     // default success response data
     var response = {
-      "statusCode": 200
+      "statusCode": 200,
+      "body": ""
     }
 
     var verify_token_req = event.queryStringParameters["hub.verify_token"];

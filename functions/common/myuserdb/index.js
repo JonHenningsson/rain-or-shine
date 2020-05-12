@@ -67,6 +67,26 @@ class UserDB {
 
   };
 
+  delUser = (athlete_id) => {
+    return new Promise(
+      (resolve, reject) => {
+        this.serverClient.query(
+            q.Delete(
+              q.Match(q.Index(FAUNADB_COLLECTION_USERS_INDEX), athlete_id)
+            )
+          )
+          .then(
+            (res) => {
+              resolve(res);
+            },
+            (rej) => {
+              reject(rej);
+            });
+      }
+    )
+
+  };
+
 
 }
 

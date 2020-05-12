@@ -47,11 +47,53 @@ cd rain-or-shine && yarn install
 export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret STRAVA_API_CLIENT_ID=your_strava_client_id STRAVA_API_CLIENT_SECRET=your_strava_client_secret
 ```
 
+6. If you need to create subscriptions, set STRAVA_VERIFY_TOKEN:
+```
+export STRAVA_VERIFY_TOKEN=12345
+```
+
 5. Run project locally
 
 Now you can run it locally and test the authentication
 ```
 yarn run netlify dev
+```
+
+
+## Running the tests
+
+jon@SL2DEB:~/git/rain-or-shine$ export NETLIFY_URL="http://localhost:8888"
+jon@SL2DEB:~/git/rain-or-shine$ export STRAVA_API_CLIENT_ID=46844
+
+jon@SL2DEB:~/git/rain-or-shine$ yarn geturl
+
+Visit URL, login with Strava and then copy code from browser url
+
+jon@SL2DEB:~/git/rain-or-shine$ export TEST_CODE=978dc6dd236cf546ea7a674558f039dd3054d1cf
+jon@SL2DEB:~/git/rain-or-shine$ export STRAVA_VERIFY_TOKEN=12345
+
+
+yarn test
+
+
+
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
 ```
 
 ####

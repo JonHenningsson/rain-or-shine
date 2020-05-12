@@ -6,19 +6,24 @@
   "author": "Jon Henningsson <jon.henningsson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "devbuild": "export HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && yarn run hugo --gc --minify",
-    "build": "export HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && hugo --gc --minify && node scripts/strava-subscribe-list",
-    "start": "export HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} && yarn run hugo server",
+    "devbuild": "env HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} yarn run hugo --gc --minify",
+    "build": "env HUGO_PARAMS_STRAVA_REDIRECTBASEURL=${URL} HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} hugo --gc --minify",
+    "start": "env HUGO_PARAMS_STRAVA_CID=${STRAVA_API_CLIENT_ID} yarn run hugo server",
     "subscribe": "node scripts/strava-subscribe-create",
     "subscriptions": "node scripts/strava-subscribe-list",
-    "unsubscribe": "node scripts/strava-subscribe-delete"
+    "unsubscribe": "node scripts/strava-subscribe-delete",
+    "test": "mocha test/*.js",
+    "geturl": "node test/scripts/gen-strava-url"
   },
   "dependencies": {
     "mystrava": "file:functions/common/mystrava/",
     "myuserdb": "file:functions/common/myuserdb/"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "hugo-bin": "^0.58.0",
+    "mocha": "^7.1.2",
     "netlify-cli": "^2.50.0"
   }
 }
