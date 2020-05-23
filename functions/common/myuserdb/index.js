@@ -1,8 +1,8 @@
 var faunadb = require('faunadb'),
   q = faunadb.query;
 
-const FAUNADB_API_SERVER_SECRET = process.env.FAUNADB_API_SERVER_SECRET
-  || process.env.FAUNADB_API_ADMIN_SECRET;
+const FAUNADB_API_SERVER_SECRET = process.env.FAUNADB_API_SERVER_SECRET ||
+  process.env.FAUNADB_API_ADMIN_SECRET;
 const FAUNADB_API_ADMIN_SECRET = process.env.FAUNADB_API_ADMIN_SECRET;
 const FAUNADB_COLLECTION_USERS = "User";
 const FAUNADB_COLLECTION_USERS_INDEX = "user_unique_athlete_id";
@@ -66,13 +66,44 @@ class UserDB {
     )
 
   };
-
+  // use ref instead of athlete_id?
   delUser = (athlete_id) => {
     return new Promise(
       (resolve, reject) => {
         this.serverClient.query(
             q.Delete(
               q.Match(q.Index(FAUNADB_COLLECTION_USERS_INDEX), athlete_id)
+            )
+          )
+          .then(
+            (res) => {
+              resolve(res);
+            },
+            (rej) => {
+              reject(rej);
+            });
+      }
+    )
+
+  };
+
+  updateTokenInfo = (
+    ref,
+    access_token,
+    refresh_token,
+    expires_at
+  ) => {
+    return new Promise(
+      (resolve, reject) => {
+        this.serverClient.query(
+            q.Update(
+              ref, {
+                data: {
+                  access_token: access_token,
+                  refresh_token: refresh_token,
+                  expires_at: expires_at
+                }
+              },
             )
           )
           .then(

@@ -17,4 +17,4 @@
 # dev settings
 [dev]
   command = "yarn start"
-  autoLaunch = true
+  autoLaunch = false

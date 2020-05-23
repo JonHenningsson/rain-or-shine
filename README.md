@@ -101,3 +101,5 @@ Give an example
 - test add user
 - test create subscription request webhook handler
 - test new event activity
+
+- environment variables for tests of activity id and athlete id
