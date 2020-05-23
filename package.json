@@ -12,7 +12,7 @@
     "subscribe": "node scripts/strava-subscribe-create",
     "subscriptions": "node scripts/strava-subscribe-list",
     "unsubscribe": "node scripts/strava-subscribe-delete",
-    "test": "mocha test/*.js",
+    "test": "mocha test/*.js --timeout 5000",
     "geturl": "node test/scripts/gen-strava-url"
   },
   "dependencies": {
