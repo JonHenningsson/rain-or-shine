@@ -1,7 +1,7 @@
 (async function() {
 
   try {
-    var webhook_handler_path = "/.netlify/functions/webhook-handler";
+    var webhook_handler_path = "/.netlify/functions/webhook";
     var base_url = process.argv[2];
     if (!base_url) {
       throw "Please provide your callback base URL e.g. https://mydomain.example.com"

@@ -84,6 +84,28 @@ jon@SL2DEB:~/git/rain-or-shine$ export OWNER_ID=your_test_athlete_id
 yarn test
 
 
+Subscribe:
+```
+jon@SL2DEB:~/git/rain-or-shine$ yarn subscribe https://rain-or-shine.henningsson.tech
+yarn run v1.22.4
+$ node scripts/strava-subscribe-create https://rain-or-shine.henningsson.tech
+== Success ==
+Successfully created subscription!
+{ id: 157546 }
+Done in 1.52s.
+
+```
+
+Delete subscription:
+```
+on@SL2DEB:~/git/rain-or-shine$ yarn unsubscribe 156485
+yarn run v1.22.4
+$ node scripts/strava-subscribe-delete 156485
+== Success ==
+Successfully deleted subscription!
+Done in 0.56s.
+
+```
 
 
 Explain how to run the automated tests for this system

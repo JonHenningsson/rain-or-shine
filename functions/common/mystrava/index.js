@@ -23,23 +23,6 @@ class MyStrava {
     this.strava.config(this.config);
   }
 
-  get_loc_from_activity = (activity) => {
-    return new Promise(
-      (resolve, reject) => {
-        if (
-          event.httpMethod == "GET" &&
-          event.queryStringParameters["hub.mode"] == "subscribe" &&
-          event.queryStringParameters["hub.challenge"] &&
-          event.queryStringParameters["hub.verify_token"]
-        ) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      }
-    )
-  };
-
   is_validation_req = (event) => {
     return new Promise(
       (resolve, reject) => {

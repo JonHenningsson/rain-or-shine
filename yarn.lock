@@ -4584,12 +4584,12 @@ mute-stream@0.0.7:
   dependencies:
     strava-v3 "^2.0.5"
 
-"myuserdb@file:functions/common/myuserdb":
-  version "1.0.0"
+"mystrava@file:functions/common/mystrava/":
+  version "1.0.2"
   dependencies:
-    faunadb "2.13.1"
+    strava-v3 "^2.0.5"
 
-"myuserdb@file:functions/common/myuserdb/":
+"myuserdb@file:functions/common/myuserdb":
   version "1.0.0"
   dependencies:
     faunadb "2.13.1"
