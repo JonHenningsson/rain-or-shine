@@ -5,7 +5,7 @@ async function getWeatherInfo(coords, date) {
   return new Promise(
     async (resolve, reject) => {
       try {
-        response = "28 celsius";
+        response = "Weather info here..";
         resolve(response);
       } catch (err) {
         reject(err);

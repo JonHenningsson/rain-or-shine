@@ -62,16 +62,24 @@ yarn run netlify dev
 
 ## Running the tests
 
+```
 jon@SL2DEB:~/git/rain-or-shine$ export NETLIFY_URL="http://localhost:8888"
 jon@SL2DEB:~/git/rain-or-shine$ export STRAVA_API_CLIENT_ID=46844
 
 jon@SL2DEB:~/git/rain-or-shine$ yarn geturl
-
+```
 Visit URL, login with Strava and then copy code from browser url
 
+```
 jon@SL2DEB:~/git/rain-or-shine$ export TEST_CODE=978dc6dd236cf546ea7a674558f039dd3054d1cf
 jon@SL2DEB:~/git/rain-or-shine$ export STRAVA_VERIFY_TOKEN=12345
+```
 
+Export owner (athlete) and activity id:
+```
+jon@SL2DEB:~/git/rain-or-shine$ export ACTIVITY_ID=your_test_activity_id
+jon@SL2DEB:~/git/rain-or-shine$ export OWNER_ID=your_test_athlete_id
+```
 
 yarn test
 
@@ -95,11 +103,3 @@ Explain what these tests test and why
 ```
 Give an example
 ```
-
-####
-
-- test add user
-- test create subscription request webhook handler
-- test new event activity
-
-- environment variables for tests of activity id and athlete id
