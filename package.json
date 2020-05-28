@@ -16,13 +16,15 @@
     "geturl": "node test/scripts/gen-strava-url"
   },
   "dependencies": {
+    "follow-redirects": "^1.11.0",
+    "jsonpath-plus": "^4.0.0",
     "mystrava": "file:functions/common/mystrava/",
     "myuserdb": "file:functions/common/myuserdb/"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "hugo-bin": "^0.58.0",
+    "hugo-bin": "^0.59.1",
     "mocha": "^7.1.2",
     "netlify-cli": "^2.50.0"
   }

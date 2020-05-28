@@ -1,12 +1,54 @@
 const mystrava = require('mystrava');
 const myuserdb = require('myuserdb');
+const weather = require('./weather');
 
-async function getWeatherInfo(coords, date) {
+async function getWeather(coords, date, provider) {
   return new Promise(
     async (resolve, reject) => {
       try {
-        response = "Weather info here..";
-        resolve(response);
+        let myw = new weather();
+        let provider = "NWS";
+        let res = await myw.getWeatherData(coords, date, provider)
+        resolve(res);
+      } catch (err) {
+        reject(err);
+      }
+
+    }
+  )
+
+};
+
+async function createWeatherDescription(weather, attr_arr) {
+  return new Promise(
+    async (resolve, reject) => {
+      try {
+        let descr = "";
+        attr_arr.forEach(function(attr, index) {
+          if (weather.hasOwnProperty(attr)) {
+            if (index != 0) {
+              descr += ", ";
+            }
+            if ((attr == "description") && (weather.description)) {
+              descr += `${weather.description}`;
+            } else if ((attr == "temperature") && (weather.temperature)) {
+              descr += `${weather.temperature}${weather.temperature_unit}`;
+            } else if ((attr == "heat_index") && (weather.heat_index)) {
+              descr += `Feels like ${weather.heat_index}${weather.heat_index_unit}`;
+            } else if ((attr == "relative_humidity") && (weather.relative_humidity)) {
+              descr += `Humidity ${weather.relative_humidity}${weather.relative_humidity_unit}`;
+            } else if ((attr == "wind_speed") && (weather.wind_speed || weather.wind_speed == 0)) {
+              descr += `Wind ${weather.wind_speed} ${weather.wind_speed_unit}`;
+              if (!weather.wind_speed == 0) {
+                descr += ` from ${weather.wind_direction}`;
+              }
+            }
+          }
+        });
+
+        descr = descr.replace(/\, +$/, "");
+
+        resolve(descr);
       } catch (err) {
         reject(err);
       }
@@ -104,13 +146,22 @@ async function handleNewActivity(event, response) {
           // get weather info
           if (coords.latitude && date) {
             try {
-              let weather = await getWeatherInfo(coords, date);
+              let weather = await getWeather(coords, date);
               console.log("Got weather information");
               let existing_description = "";
               if (activity.description) {
                 existing_description = activity.description;
               }
-              data.description = weather + "\n" + existing_description;
+
+              let descr_order = [
+                "description",
+                "temperature",
+                "heat_index",
+                "relative_humidity",
+                "wind_speed"
+              ]
+              let new_descr = await createWeatherDescription(weather, descr_order);
+              data.description = new_descr + "\n" + existing_description;
             } catch (err) {
               reject("Unable to get weather information");
             }
