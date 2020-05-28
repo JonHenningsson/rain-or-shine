@@ -23,10 +23,6 @@ These instructions will get you a copy of the project up and running on your loc
 1. yarn
 1. node
 
-```
-Give examples
-```
-
 ### Setup & Run Locally
 1. Clone the repository
 
@@ -41,30 +37,35 @@ Give examples
 ```
 
 3. Setup FaunaDB integration
-  1. Create a new database
-  1. Create a new collection User
-  1. Create a new index "user_unique_athlete_id", terms = "data.athlete_id", Unique = checked
-  1. Create a new SERVER KEY
+   1. Create a new database
+   1. Create a new collection User
+   1. Create a new index "user_unique_athlete_id", terms = "data.athlete_id", Unique = checked
+   1. Create a new SERVER KEY
 
 4. Setup Strava integration
-  1. Create a new API application and note down Client ID and Client Secret
+   1. Create a new API application and note down Client ID and Client Secret
 
 5. Set the environment variables for FaunaDB and Strava API:
 ```
 # export FAUNADB_API_SERVER_SECRET=your_fauna_server_secret STRAVA_API_CLIENT_ID=your_strava_client_id STRAVA_API_CLIENT_SECRET=your_strava_client_secret NWS_API_UA_EMAIL=your_contact_email
 ```
 
-6. Set weather provider API environment variables:
+6. Set your contact email NWS API:
+```
+export NWS_API_UA_EMAIL=your_contact_email
+```
+
+7. Set weather provider API environment variables:
 ```
 # export NWS_API_UA_EMAIL=your_contact_email
 ```
 
-7. If you intend to run the webhook verification test, set the required environment variable:
+8. If you intend to run the webhook verification test, set the required environment variable:
 ```
 # export STRAVA_VERIFY_TOKEN=12345
 ```
 
-8. Run project locally:
+9. Run project locally:
 
 ```
 # yarn run netlify dev
@@ -126,8 +127,8 @@ For the webhook tests you must have a user and activity that the application is 
 
 2. Set the environment variables:
 ```
-# export OWNER_ID=14655447
-# export ACTIVITY_ID=3503678117
+# export OWNER_ID=<your_athlete_id>
+# export ACTIVITY_ID=<your_activity_id>
 ```
 
 3. In order to pass the subscription verification test, set the required environment variable:
