@@ -105,7 +105,7 @@ Strava authorization URL: https://www.strava.com/oauth/authorize?client_id=46844
 ```
 # yarn run mocha test/add-user.js --timeout 5000
 yarn run v1.22.4
-$ /home/jon/git/rain-or-shine/node_modules/.bin/mocha test/add-user.js --timeout 5000
+$ ~/rain-or-shine/node_modules/.bin/mocha test/add-user.js --timeout 5000
 
 
   adduser
@@ -141,7 +141,7 @@ Note that this also required the same to be set in the netlify environment.
 ```
 # yarn run mocha test/webhook.js --timeout 10000
 yarn run v1.22.4
-$ /home/jon/git/rain-or-shine/node_modules/.bin/mocha test/webhook.js --timeout 10000
+$ ~/rain-or-shine/node_modules/.bin/mocha test/webhook.js --timeout 10000
 
 
   webhook
@@ -151,8 +151,6 @@ $ /home/jon/git/rain-or-shine/node_modules/.bin/mocha test/webhook.js --timeout 
     POST /.netlify/functions/webhook
       ✓ create - activity (2310ms)
       ✓ create - activity - invalid owner id (168ms)
-
-
       ✓ create - activity - invalid activity id (499ms)
       ✓ bogus event
 
