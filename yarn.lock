@@ -2792,7 +2792,7 @@ folder-walker@^3.2.0:
   dependencies:
     from2 "^2.1.0"
 
-follow-redirects@^1.0.0:
+follow-redirects@^1.0.0, follow-redirects@^1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.11.0.tgz#afa14f08ba12a52963140fe43212658897bc0ecb"
   integrity sha512-KZm0V+ll8PfBrKwMzdo5D13b1bur9Iq9Zd/RMmAoQQcl2PxxFml8cxXPaaPYVbV0RjNjq1CU7zIzAOqtUPudmA==
@@ -3376,10 +3376,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-hugo-bin@^0.58.0:
-  version "0.58.0"
-  resolved "https://registry.yarnpkg.com/hugo-bin/-/hugo-bin-0.58.0.tgz#f8ec63199c1e73135d3e24eb41297201f9172d43"
-  integrity sha512-lTn+UrsTFJLlTaFWVgY1LcwObc+XeZ5O49Bh2I0megfEBloqR4CuYKjg237IIKZPvh+PIi4ZDv+UrPCBbeKBCA==
+hugo-bin@^0.59.1:
+  version "0.59.1"
+  resolved "https://registry.yarnpkg.com/hugo-bin/-/hugo-bin-0.59.1.tgz#96683a522563ead42a3dd44f93dc18aa6091ce34"
+  integrity sha512-mPKgNTuvqIo98xoRYKbKxdhv+yANSDziB+6PHvPG1BHJ6pAuhi/73r21ywbAmEnAsir4gQTtkge9kXse3FvTeA==
   dependencies:
     bin-wrapper "^4.1.0"
     pkg-conf "^3.1.0"
@@ -3954,6 +3954,11 @@ jsonfile@^4.0.0:
   integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jsonpath-plus@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-4.0.0.tgz#954b69faa3d8b07f30ae2f9e601176a4b0d2806e"
+  integrity sha512-e0Jtg4KAzDJKKwzbLaUtinCn0RZseWBVRTRGihSpvFlM3wTR7ExSp+PTdeTsDrLNJUe7L7JYJe8mblHX5SCT6A==
 
 jsprim@^1.2.2:
   version "1.4.1"
@@ -4580,11 +4585,6 @@ mute-stream@0.0.7:
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
 "mystrava@file:functions/common/mystrava":
-  version "1.0.2"
-  dependencies:
-    strava-v3 "^2.0.5"
-
-"mystrava@file:functions/common/mystrava/":
   version "1.0.2"
   dependencies:
     strava-v3 "^2.0.5"
