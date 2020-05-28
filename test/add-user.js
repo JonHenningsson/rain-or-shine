@@ -3,8 +3,8 @@ let code = process.env.TEST_CODE;
 const NETLIFY_URL = process.env.NETLIFY_URL;
 const FUNCTION_PATH = "/.netlify/functions/add-user";
 
-if (! (code && NETLIFY_URL)) {
-  console.log("Please set TEST_CODE and NETLIFY_URL! Exiting");
+if (! (NETLIFY_URL)) {
+  console.log("Please set NETLIFY_URL! Exiting");
   process.exit(1);
 }
 
@@ -17,6 +17,10 @@ describe('adduser', () => {
 
   describe('GET ' + FUNCTION_PATH, () => {
       it('Add user - valid', (done) => {
+        if (! (code)) {
+          console.log("Please set TEST_CODE! Exiting");
+          process.exit(1);
+        }
         chai.request(NETLIFY_URL)
             .get(FUNCTION_PATH)
             .query({
