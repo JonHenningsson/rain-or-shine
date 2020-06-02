@@ -6,8 +6,7 @@ rain-or-shine is a weather app for Strava
 - Improve weather description templating
 - Save settings to user in db
 - Allow user to define settings such as weather provider, description template
-- Remove user from DB upon delete webhook event  or not able to get access
-- Settings page for registered users
+- Settings management page
 
 
 ## Getting started
