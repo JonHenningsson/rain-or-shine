@@ -10,7 +10,7 @@ const MyStrava = require('mystrava');
     }
 
     const mys = new MyStrava();
-    const straveGeneric = await mys.strava_v3();
+    const straveGeneric = await mys.stravaV3();
 
     await straveGeneric.pushSubscriptions.delete({
       id: subId,

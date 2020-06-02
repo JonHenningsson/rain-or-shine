@@ -9,7 +9,7 @@ const MyStrava = require('mystrava');
     }
 
     const mys = new MyStrava();
-    const stravaGeneric = await mys.strava_v3();
+    const stravaGeneric = await mys.stravaV3();
 
     const callbackUrl = baseUrl + webhookHandlerPath;
 
