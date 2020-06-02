@@ -63,12 +63,11 @@ class MyUserDB {
     },
   );
 
-  // use ref instead of athlete_id?
-  delUser = (athleteId) => new Promise(
+  delUser = (ref) => new Promise(
     (resolve, reject) => {
       this.serverClient.query(
         q.Delete(
-          q.Match(q.Index(FAUNADB_COLLECTION_USERS_INDEX), athleteId),
+          ref,
         ),
       )
         .then(

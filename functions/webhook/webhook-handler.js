@@ -200,6 +200,37 @@ async function handleValidationReq(event, response) {
   );
 }
 
+async function handleAthleteAuthFalse(event, response) {
+  return new Promise(
+    async (resolve, reject) => {
+      const json = JSON.parse(event.body);
+      const ownerId = parseFloat(json.owner_id);
+      let user;
+      const udb = new MyUserDB();
+
+      try {
+        user = await udb.getUser(ownerId);
+      } catch (err) {
+        response.body = 'Unknown user!';
+        console.log('Unknown user!');
+      }
+
+      if (user) {
+        try {
+          await udb.delUser(user.ref);
+          console.log('Removed user from DB');
+        } catch (err) {
+          console.log(err);
+          response.body = 'Unable to remove user from db!';
+          console.log(response.body);
+          reject(response);
+        }
+      }
+      resolve(response);
+    },
+  );
+}
+
 
 async function webhook(event, response) {
   console.log('Webhook event being handled..');
@@ -219,9 +250,18 @@ async function webhook(event, response) {
             // execute async if this is production
             handleNewActivity(event, r);
           }
+          // athlete deauthorized app
+        } else if (await mys.isAthleteUpdateAuthFalseReq(event)) {
+          if (!(process.env.NODE_ENV === 'production')) {
+            r = await handleAthleteAuthFalse(event, r);
+          } else {
+            // execute async if this is production
+            handleAthleteAuthFalse(event, r);
+          }
           // Others - not implemented
         } else {
           r.body = 'Not implemented';
+          console.log(event);
         }
 
         console.log('Done handling webhook!');

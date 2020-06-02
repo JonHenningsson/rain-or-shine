@@ -114,6 +114,46 @@ describe('webhook', () => {
         });
     });
 
+    it('update - athlete - authorized : false', (done) => {
+      const now = Math.round(new Date().getTime() / 1000);
+      chai.request(NETLIFY_URL)
+        .post(FUNCTION_PATH)
+        .type('json')
+        .send({
+          object_type: 'athlete',
+          object_id: OWNER_ID,
+          aspect_type: 'update',
+          owner_id: OWNER_ID,
+          subscription_id: '120475',
+          updates: { authorized: 'false' },
+          event_time: now,
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+
+    it('update - athlete - authorized : false - invalid owner id', (done) => {
+      const now = Math.round(new Date().getTime() / 1000);
+      chai.request(NETLIFY_URL)
+        .post(FUNCTION_PATH)
+        .type('json')
+        .send({
+          object_type: 'athlete',
+          object_id: 123456,
+          aspect_type: 'update',
+          owner_id: 123456,
+          subscription_id: '120475',
+          updates: { authorized: 'false' },
+          event_time: now,
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+
     it('bogus event', (done) => {
       chai.request(NETLIFY_URL)
         .post(FUNCTION_PATH)

@@ -54,6 +54,23 @@ class MyStrava {
     },
   );
 
+  isAthleteUpdateAuthFalseReq = (event) => new Promise(
+    (resolve) => {
+      const json = JSON.parse(event.body);
+      if (
+        event.httpMethod === 'POST'
+          && json.object_type === 'athlete'
+          && json.aspect_type === 'update'
+          && json.object_id === json.owner_id
+          && json.updates.authorized === 'false'
+      ) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    },
+  );
+
   updateAccessToken = (refreshToken) => new Promise(
     async (resolve, reject) => {
       try {

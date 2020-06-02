@@ -5022,6 +5022,11 @@ mute-stream@0.0.8:
   dependencies:
     strava-v3 "^2.0.5"
 
+"mystrava@file:functions/common/mystrava/":
+  version "1.0.2"
+  dependencies:
+    strava-v3 "^2.0.5"
+
 "myuserdb@file:functions/common/myuserdb":
   version "1.0.0"
   dependencies:
