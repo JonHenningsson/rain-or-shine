@@ -1,15 +1,15 @@
 const myhelper = require('./webhook-handler');
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
     // default success response data
-    var response = {
-      "statusCode": 200,
-      "headers": {
-        "Content-Type": "x-www-form-urlencoded"
+    let response = {
+      statusCode: 200,
+      headers: {
+        'Content-Type': 'x-www-form-urlencoded',
       },
-      "body": ""
-    }
+      body: '',
+    };
     response = await myhelper.webhook(event, response);
 
 
@@ -17,16 +17,16 @@ exports.handler = async (event, context) => {
 
     // failure response
   } catch (err) {
-    console.log("Error during handling of webhook request");
+    console.log('Error during handling of webhook request');
     console.log(err);
     return {
       statusCode: 500,
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "status": "error"
-      })
-    }
+        status: 'error',
+      }),
+    };
   }
-}
+};

@@ -1,14 +1,15 @@
-function getUrlParameter(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(window.location.search);
+function getUrlParameter(n) {
+  const name = n.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+  const regex = new RegExp(`[\\?&]${name}=([^&#]*)`);
+  const results = regex.exec(window.location.search);
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
+}
 
 async function addUser() {
-  let code = getUrlParameter("code");
-  let scope = getUrlParameter("scope");
-  let state = getUrlParameter("state");
+  let result;
+  const code = getUrlParameter('code');
+  const scope = getUrlParameter('scope');
+  const state = getUrlParameter('state');
 
   // verify parameters are present
   if (!(code && scope && state)) {
@@ -16,17 +17,16 @@ async function addUser() {
   }
 
   try {
-    var result = await $.ajax({
-      url: "/.netlify/functions/add-user",
-      type: "GET",
+    result = await $.ajax({
+      url: '/.netlify/functions/add-user',
+      type: 'GET',
       data: {
-        "code": code,
-        "scope": scope,
-        "state": state
+        code,
+        scope,
+        state,
       },
-      dataType: "json"
+      dataType: 'json',
     });
-
   } catch (err) {
     return false;
   }

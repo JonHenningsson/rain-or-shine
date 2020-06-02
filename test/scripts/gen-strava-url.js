@@ -1,28 +1,23 @@
-(async function() {
-
+(async function run() {
   try {
+    const baseurl = process.env.NETLIFY_URL;
+    const clientId = process.env.STRAVA_API_CLIENT_ID;
 
-    let baseurl = process.env.NETLIFY_URL;
-    let client_id = process.env.STRAVA_API_CLIENT_ID;
-
-    if (! (baseurl && client_id)) {
-      throw "Please set NETLIFY_URL and STRAVA_API_CLIENT_ID";
+    if (!(baseurl && clientId)) {
+      throw new Error('Please set NETLIFY_URL and STRAVA_API_CLIENT_ID');
     }
 
-    let scope = "read,activity:write,activity:read";
+    const scope = 'read,activity:write,activity:read';
 
-    let redirect_uri = `${baseurl}/connect/test`;
-    let state = "not_used";
+    const redirectUri = `${baseurl}/connect/test`;
+    const state = 'not_used';
 
-    let url = `https://www.strava.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=${state}`;
+    const url = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}`;
 
-    console.log("Strava authorization URL: " + url);
-
-
+    console.log(`Strava authorization URL: ${url}`);
   } catch (err) {
-    console.log("== Error ==")
+    console.log('== Error ==');
     console.log(err);
     process.exit(1);
   }
-
 }());

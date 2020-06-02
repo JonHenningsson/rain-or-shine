@@ -1,0 +1,48 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb-base"],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-async-promise-executor": "off",
+    "no-console": "off",
+    "new-cap": [ "error",
+      {
+        "newIsCapExceptions":
+        [
+          // https://github.com/unboundev/node-strava-v3
+          "stravaGeneric.client"
+        ],
+        "capIsNewExceptions":
+        [
+          // https://github.com/s3u/JSONPath
+          "JSONPath"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      // mocha and chai for tests
+      "files": ["test/*.js"],
+      "extends": ["plugin:chai-friendly/recommended"],
+      "env": { "mocha": true }
+    },
+    {
+      // browser scripts
+      "files": ["static/js/*"],
+      "env": { "browser": true, "jquery": true },
+      "rules": {"no-unused-vars": "off", "no-console": "error"}
+    },
+    {
+      // faunadb js library
+      "files": ["functions/common/myuserdb/index.js"],
+      "rules": {
+        "new-cap": [ "error",
+          {"capIsNewExceptionPattern": "q.."}
+        ]
+      }
+    }
+  ]
+}

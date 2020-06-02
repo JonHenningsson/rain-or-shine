@@ -1,104 +1,104 @@
-const mystrava = require('mystrava');
-const myuserdb = require('myuserdb');
+const MyStrava = require('mystrava');
+const MyUserDB = require('myuserdb');
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
-
     // default response data
-    var statusCode = 200;
-    var statusMessage;
+    let statusCode = 200;
+    let statusMessage;
+
+    let accessToken;
+    let refreshToken;
+    let expiresAt;
+    let athleteId;
 
     // Strava
     // initialize strava object and obtain access token
     try {
-      const mys = new mystrava();
-      var strava_generic = await mys.strava_v3();
+      const mys = new MyStrava();
+      const stravaGeneric = await mys.stravaV3();
 
-      let code = event.queryStringParameters.code;
-      let scope = event.queryStringParameters.scope;
-      let state = event.queryStringParameters.state;
+      const { code } = event.queryStringParameters;
+      // const { scope } = event.queryStringParameters;
+      // const { state } = event.queryStringParameters;
 
-      let payload = await strava_generic.oauth.getToken(code);
-      var access_token = payload.access_token;
-      var refresh_token = payload.refresh_token;
-      var expires_at = payload.expires_at;
+      let payload = await stravaGeneric.oauth.getToken(code);
+      accessToken = payload.access_token;
+      refreshToken = payload.refresh_token;
+      expiresAt = payload.expires_at;
 
       // initialize new strava object with athlete access
-      var strava = new strava_generic.client(access_token);
+      const strava = new stravaGeneric.client(accessToken);
       payload = await strava.athlete.get({});
-      var athlete_id = payload.id;
-
+      athleteId = payload.id;
     } catch (err) {
       console.log(err);
-      throw "Failed to get Strava athlete information";
+      throw new Error('Failed to get Strava athlete information');
     }
 
     try {
-      const udb = new myuserdb();
+      const udb = new MyUserDB();
+      let userExists = false;
 
       // Check if user exists
       try {
-        var user_exists = false;
-        let res = await udb.getUser(
-          athlete_id
+        await udb.getUser(
+          athleteId,
         );
 
-        user_exists = true;
+        userExists = true;
         statusCode = 200;
-        statusMessage = "User already exists";
-
+        statusMessage = 'User already exists';
       } catch (err) {
-        if (err.name !== "NotFound") {
-          throw "Failed to get user from db";
+        if (err.name !== 'NotFound') {
+          console.log(err);
+          throw new Error('Failed to get user from db');
         }
       }
 
       // Save user to DB
       try {
-        if (!user_exists) {
-          res = await udb.addUser(
-            athlete_id,
-            access_token,
-            refresh_token,
-            expires_at
+        if (!userExists) {
+          await udb.addUser(
+            athleteId,
+            accessToken,
+            refreshToken,
+            expiresAt,
           );
 
           statusCode = 201;
-          statusMessage = "User added";
-
+          statusMessage = 'User added';
         }
       } catch (err) {
-        throw "Failed to save user to db"
+        throw new Error('Failed to save user to db');
       }
-
     } catch (err) {
       console.log(err);
-      throw "Failed to add user";
+      throw new Error('Failed to add user');
     }
 
     // HTTP Response
     return {
-      statusCode: statusCode,
+      statusCode,
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "status": "success",
-        "message": statusMessage
-      })
-    }
-
+        status: 'success',
+        message: statusMessage,
+      }),
+    };
   } catch (err) {
     console.log(err);
     return {
       statusCode: 500,
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        "status": "error",
-        "message": err.toString()
-      })
-    }
+        status: 'error',
+        message: err.message,
+      }),
+    };
   }
-}
+};

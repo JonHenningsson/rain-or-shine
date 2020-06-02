@@ -1,36 +1,28 @@
-(async function() {
+const MyStrava = require('mystrava');
 
+(async function run() {
   try {
-    var webhook_handler_path = "/.netlify/functions/webhook";
-    var base_url = process.argv[2];
-    if (!base_url) {
-      throw "Please provide your callback base URL e.g. https://mydomain.example.com"
+    const webhookHandlerPath = '/.netlify/functions/webhook';
+    const baseUrl = process.argv[2];
+    if (!baseUrl) {
+      throw new Error('Please provide your callback base URL e.g. https://mydomain.example.com');
     }
 
-    const mystrava = require('mystrava');
-    const mys = new mystrava();
-    var strava_generic = await mys.strava_v3();
+    const mys = new MyStrava();
+    const stravaGeneric = await mys.strava_v3();
 
-    var callback_url = base_url + webhook_handler_path;
+    const callbackUrl = baseUrl + webhookHandlerPath;
 
-    try {
-      let payload =
-        await strava_generic.pushSubscriptions.create({
-          "callback_url": callback_url,
-          "verify_token": mys.verify_token
-        });
-        console.log("== Success ==");
-        console.log("Successfully created subscription!");
-        console.log(payload);
-
-    } catch (error) {
-      throw error.message
-    }
-
+    const payload = await stravaGeneric.pushSubscriptions.create({
+      callbackUrl,
+      verify_token: mys.verify_token,
+    });
+    console.log('== Success ==');
+    console.log('Successfully created subscription!');
+    console.log(payload);
   } catch (err) {
-    console.log("== Error ==")
+    console.log('== Error ==');
     console.log(err);
     process.exit(1);
   }
-
 }());

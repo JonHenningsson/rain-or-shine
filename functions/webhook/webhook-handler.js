@@ -1,247 +1,237 @@
-const mystrava = require('mystrava');
-const myuserdb = require('myuserdb');
-const weather = require('./weather');
+const MyStrava = require('mystrava');
+const MyUserDB = require('myuserdb');
+const MyWeather = require('./weather');
 
 async function getWeather(coords, date, provider) {
   return new Promise(
     async (resolve, reject) => {
       try {
-        let myw = new weather();
-        let provider = "NWS";
-        let res = await myw.getWeatherData(coords, date, provider)
+        const myw = new MyWeather();
+        const res = await myw.getWeatherData(coords, date, provider);
         resolve(res);
       } catch (err) {
         reject(err);
       }
+    },
+  );
+}
 
-    }
-  )
-
-};
-
-async function createWeatherDescription(weather, attr_arr) {
+async function createWeatherDescription(w, attrArr) {
   return new Promise(
     async (resolve, reject) => {
       try {
-        let descr = "";
-        attr_arr.forEach(function(attr, index) {
-          if (weather.hasOwnProperty(attr)) {
-            if (index != 0) {
-              descr += ", ";
+        let descr = '';
+
+        attrArr.forEach((attr, index) => {
+          if (Object.prototype.hasOwnProperty.call(w, attr)) {
+            if (index !== 0) {
+              descr += ', ';
             }
-            if ((attr == "description") && (weather.description)) {
-              descr += `${weather.description}`;
-            } else if ((attr == "temperature") && (weather.temperature)) {
-              descr += `${weather.temperature}${weather.temperature_unit}`;
-            } else if ((attr == "heat_index") && (weather.heat_index)) {
-              descr += `Feels like ${weather.heat_index}${weather.heat_index_unit}`;
-            } else if ((attr == "relative_humidity") && (weather.relative_humidity)) {
-              descr += `Humidity ${weather.relative_humidity}${weather.relative_humidity_unit}`;
-            } else if ((attr == "wind_speed") && (weather.wind_speed || weather.wind_speed == 0)) {
-              descr += `Wind ${weather.wind_speed} ${weather.wind_speed_unit}`;
-              if (!weather.wind_speed == 0) {
-                descr += ` from ${weather.wind_direction}`;
+            if ((attr === 'description') && (w.description)) {
+              descr += `${w.description}`;
+            } else if ((attr === 'temperature') && (w.temperature)) {
+              descr += `${w.temperature}${w.temperature_unit}`;
+            } else if ((attr === 'heat_index') && (w.heat_index)) {
+              descr += `Feels like ${w.heat_index}${w.heat_index_unit}`;
+            } else if ((attr === 'relative_humidity') && (w.relative_humidity)) {
+              descr += `Humidity ${w.relative_humidity}${w.relative_humidity_unit}`;
+            } else if ((attr === 'wind_speed') && (w.wind_speed || w.wind_speed === 0)) {
+              descr += `Wind ${w.wind_speed} ${w.wind_speed_unit}`;
+              if (w.wind_speed !== 0) {
+                descr += ` from ${w.wind_direction}`;
               }
             }
           }
         });
 
-        descr = descr.replace(/\, +$/, "");
+        descr = descr.replace(/, +$/, '');
 
         resolve(descr);
       } catch (err) {
         reject(err);
       }
-
-    }
-  )
-
-};
+    },
+  );
+}
 
 
 async function handleNewActivity(event, response) {
   return new Promise(
     async (resolve, reject) => {
-      let json = JSON.parse(event.body);
-      let owner_id = parseFloat(json.owner_id);
+      const json = JSON.parse(event.body);
+      const ownerId = parseFloat(json.owner_id);
 
       // check if user exists (is in our db)
       let user;
-      let udb = new myuserdb();
+      const udb = new MyUserDB();
       try {
-        user = await udb.getUser(owner_id);
+        user = await udb.getUser(ownerId);
       } catch (err) {
-        response.body = "Unknown user!";
-        console.log("Unknown user!");
+        response.body = 'Unknown user!';
+        console.log('Unknown user!');
       }
 
       // check if access token is valid and get new if needed
       if (user) {
-        let mys = new mystrava();
-        let token_info;
-        let now = Math.floor(new Date() / 1000);
-        let diff = user.data.expires_at - now;
+        let activity;
+        let accessToken;
+        const mys = new MyStrava();
+        let tokenInfo;
+        const now = Math.floor(new Date() / 1000);
+        const diff = user.data.expires_at - now;
         if (diff < 10) {
-
-          let res;
           try {
-            token_info = await mys.updateAccessToken(user.data.refresh_token);
-            res = await udb.updateTokenInfo(
+            tokenInfo = await mys.updateAccessToken(user.data.refreshToken);
+            await udb.updateTokenInfo(
               user.ref,
-              token_info.access_token,
-              token_info.refresh_token,
-              token_info.expires_at
+              tokenInfo.accessToken,
+              tokenInfo.refreshToken,
+              tokenInfo.expiresAt,
             );
           } catch (err) {
-            reject("Unable to update access token");
+            reject(new Error('Unable to update access token'));
           }
         }
 
         // use new token if present
-        let access_token;
-        if (token_info) {
-          access_token = token_info.access_token;
+        if (tokenInfo) {
+          accessToken = tokenInfo.accessToken;
         } else {
-          access_token = user.data.access_token;
+          accessToken = user.data.accessToken;
         }
 
         // get activity
-        let activity_id = parseFloat(json.object_id);
-        let activity;
+        const activityId = parseFloat(json.object_id);
         try {
-          activity = await mys.getActivity(activity_id, access_token);
+          activity = await mys.getActivity(activityId, accessToken);
         } catch (err) {
-          reject("Unable to get activity");
+          reject(new Error('Unable to get activity'));
         }
 
         // todo: check that activity is outdoor
-        let data = {};
+        const data = {};
         let coords = {};
         let date;
         if (activity) {
-
           if (
-            activity.start_latitude &&
-            activity.start_longitude
+            activity.start_latitude
+            && activity.start_longitude
           ) {
             coords = {
-              "latitude": activity.start_latitude,
-              "longitude": activity.start_longitude
+              latitude: activity.start_latitude,
+              longitude: activity.start_longitude,
             };
           } else {
-            reject("No latitude or longitude found");
+            reject(new Error('No latitude or longitude found'));
           }
 
           if (activity.start_date) {
             try {
               date = new Date(activity.start_date);
             } catch (err) {
-              reject("Unable to identify date and time of activity");
+              reject(new Error('Unable to identify date and time of activity'));
             }
-
           } else {
-            reject("No start date found");
+            reject(new Error('No start date found'));
           }
 
           // get weather info
           if (coords.latitude && date) {
             try {
-              let weather = await getWeather(coords, date);
-              console.log("Got weather information");
-              let existing_description = "";
+              const w = await getWeather(coords, date, 'NWS');
+              console.log('Got weather information');
+              let existingDescr = '';
               if (activity.description) {
-                existing_description = activity.description;
+                existingDescr = activity.description;
               }
 
-              let descr_order = [
-                "description",
-                "temperature",
-                "heat_index",
-                "relative_humidity",
-                "wind_speed"
-              ]
-              let new_descr = await createWeatherDescription(weather, descr_order);
-              data.description = new_descr + "\n" + existing_description;
+              const descrOrder = [
+                'description',
+                'temperature',
+                'heat_index',
+                'relative_humidity',
+                'wind_speed',
+              ];
+              const newDescr = await createWeatherDescription(w, descrOrder);
+              data.description = `${newDescr}\n${existingDescr}`;
             } catch (err) {
-              reject("Unable to get weather information");
+              reject(new Error('Unable to get weather information'));
             }
           }
-
         }
 
         // update activity
         try {
           if (data.description) {
-            await mys.updateActivity(activity_id, access_token, data);
-            console.log("Updated activity!");
+            await mys.updateActivity(activityId, accessToken, data);
+            console.log('Updated activity!');
           }
         } catch (err) {
-          reject("Unable to update activity");
+          console.log(err);
+          reject(new Error('Unable to update activity'));
         }
       }
 
       resolve(response);
-
-    }
-  )
-};
+    },
+  );
+}
 
 async function handleValidationReq(event, response) {
   return new Promise(
     async (resolve, reject) => {
-      let mys = new mystrava();
-      let verify_token_req = event.queryStringParameters["hub.verify_token"];
-      let challenge = event.queryStringParameters["hub.challenge"];
+      const mys = new MyStrava();
+      const verifyTokenReq = event.queryStringParameters['hub.verify_token'];
+      const challenge = event.queryStringParameters['hub.challenge'];
 
-      if (verify_token_req == mys.verify_token) {
+      if (verifyTokenReq === mys.verify_token) {
         response.headers = {
-            "Content-Type": "application/json"
-          },
-          response.body = JSON.stringify({
-            "hub.challenge": challenge
-          });
+          'Content-Type': 'application/json',
+        };
+        response.body = JSON.stringify({
+          'hub.challenge': challenge,
+        });
       } else {
-        reject("Verify token incorrect");
+        reject(new Error('Verify token incorrect'));
       }
-      console.log("Handled validation request!");
+      console.log('Handled validation request!');
       resolve(response);
-    }
-  )
-};
+    },
+  );
+}
 
 
 async function webhook(event, response) {
-  console.log("Webhook event being handled..");
+  console.log('Webhook event being handled..');
   return new Promise(
     async (resolve, reject) => {
       try {
-        let mys = new mystrava();
+        let r = response;
+        const mys = new MyStrava();
         // Validation request handling
-        if (await mys.is_validation_req(event)) {
-          response = await handleValidationReq(event, response);
+        if (await mys.isValidationReq(event)) {
+          r = await handleValidationReq(event, r);
           // New activity request handling
-        } else if (await mys.is_activity_create_req(event)) {
-          if (!(process.env.NODE_ENV == "production")) {
-            response = await handleNewActivity(event, response);
+        } else if (await mys.isActivityCreateReq(event)) {
+          if (!(process.env.NODE_ENV === 'production')) {
+            r = await handleNewActivity(event, r);
           } else {
             // execute async if this is production
-            handleNewActivity(event, response);
+            handleNewActivity(event, r);
           }
           // Others - not implemented
         } else {
-          response.body = "Not implemented";
+          r.body = 'Not implemented';
         }
 
-        console.log("Done handling webhook!");
+        console.log('Done handling webhook!');
         // Resolve webhook helper promise
-        resolve(response);
+        resolve(r);
       } catch (err) {
         reject(err);
       }
-
-    }
-  )
-
+    },
+  );
 }
 
 

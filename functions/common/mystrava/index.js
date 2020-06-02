@@ -1,9 +1,9 @@
 const strava = require('strava-v3');
 
-const STRAVA_API_CLIENT_ID = process.env.STRAVA_API_CLIENT_ID;
-const STRAVA_API_CLIENT_SECRET = process.env.STRAVA_API_CLIENT_SECRET;
-const STRAVA_VERIFY_TOKEN = process.env.STRAVA_VERIFY_TOKEN;
-const STRAVA_REDIRECT_URI = process.env.STRAVA_REDIRECT_URI;
+const { STRAVA_API_CLIENT_ID } = process.env;
+const { STRAVA_API_CLIENT_SECRET } = process.env;
+const { STRAVA_VERIFY_TOKEN } = process.env;
+const { STRAVA_REDIRECT_URI } = process.env;
 
 
 class MyStrava {
@@ -15,101 +15,89 @@ class MyStrava {
     this.redirect_uri = STRAVA_REDIRECT_URI;
 
     this.config = {
-      "client_id": this.client_id,
-      "client_secret": this.client_secret,
-      "redirect_uri": this.redirect_uri
+      client_id: this.client_id,
+      client_secret: this.client_secret,
+      redirect_uri: this.redirect_uri,
     };
 
     this.strava.config(this.config);
   }
 
-  is_validation_req = (event) => {
-    return new Promise(
-      (resolve, reject) => {
-        if (
-          event.httpMethod == "GET" &&
-          event.queryStringParameters["hub.mode"] == "subscribe" &&
-          event.queryStringParameters["hub.challenge"] &&
-          event.queryStringParameters["hub.verify_token"]
-        ) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
+  isValidationReq = (event) => new Promise(
+    (resolve) => {
+      if (
+        event.httpMethod === 'GET'
+          && event.queryStringParameters['hub.mode'] === 'subscribe'
+          && event.queryStringParameters['hub.challenge']
+          && event.queryStringParameters['hub.verify_token']
+      ) {
+        resolve(true);
+      } else {
+        resolve(false);
       }
-    )
-  };
+    },
+  );
 
-  is_activity_create_req = (event) => {
-    return new Promise(
-      (resolve, reject) => {
-        let json = JSON.parse(event.body);
-        if (
-          event.httpMethod == "POST" &&
-          json.object_type == "activity" &&
-          json.aspect_type == "create" &&
-          json.object_id
-        ) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
+  isActivityCreateReq = (event) => new Promise(
+    (resolve) => {
+      const json = JSON.parse(event.body);
+      if (
+        event.httpMethod === 'POST'
+          && json.object_type === 'activity'
+          && json.aspect_type === 'create'
+          && json.object_id
+      ) {
+        resolve(true);
+      } else {
+        resolve(false);
       }
-    )
-  };
+    },
+  );
 
-  updateAccessToken = (refresh_token) => {
-    return new Promise(
-      async (resolve, reject) => {
-        try {
-          let payload = await this.strava.oauth.refreshToken(refresh_token);
-          resolve(payload);
-        } catch (err) {
-          reject(err);
-        }
+  updateAccessToken = (refreshToken) => new Promise(
+    async (resolve, reject) => {
+      try {
+        const payload = await this.strava.oauth.refreshToken(refreshToken);
+        resolve(payload);
+      } catch (err) {
+        reject(err);
       }
-    )
-  };
+    },
+  );
 
-  getActivity = (activity_id, access_token) => {
-    return new Promise(
-      async (resolve, reject) => {
-        try {
-          let payload = await this.strava.activities.get({
-            "id": activity_id,
-            "access_token": access_token
-          });
-          resolve(payload);
-        } catch (err) {
-          reject(err);
-        }
+  getActivity = (activityId, accessToken) => new Promise(
+    async (resolve, reject) => {
+      try {
+        const payload = await this.strava.activities.get({
+          id: activityId,
+          access_token: accessToken,
+        });
+        resolve(payload);
+      } catch (err) {
+        reject(err);
       }
-    )
-  };
+    },
+  );
 
-  updateActivity = (activity_id, access_token, data) => {
-    return new Promise(
-      async (resolve, reject) => {
-        try {
-          data.id = activity_id;
-          data.access_token = access_token;
-          let payload = await this.strava.activities.update(data);
-          resolve(payload);
-        } catch (err) {
-          reject(err);
-        }
+  updateActivity = (activityId, accessToken, data) => new Promise(
+    async (resolve, reject) => {
+      try {
+        const dataNew = data;
+        dataNew.id = activityId;
+        dataNew.access_token = accessToken;
+        const payload = await this.strava.activities.update(dataNew);
+        resolve(payload);
+      } catch (err) {
+        reject(err);
       }
-    )
-  };
+    },
+  );
 
-  strava_v3 = () => {
-    return new Promise(
-      (resolve, reject) => {
-        resolve(this.strava);
-      }
-    )
-  };
-
+  stravaV3 = () => new Promise(
+    (resolve) => {
+      resolve(this.strava);
+    },
+  );
 }
 
 module.exports = MyStrava;
