@@ -11,12 +11,12 @@
       {
         "newIsCapExceptions":
         [
-          // https://github.com/unboundev/node-strava-v3
+          // https://github.com/UnbounDev/node-strava-v3#overriding-the-default-access_token
           "stravaGeneric.client"
         ],
         "capIsNewExceptions":
         [
-          // https://github.com/s3u/JSONPath
+          // https://github.com/s3u/JSONPath#nodejs
           "JSONPath"
         ]
       }
