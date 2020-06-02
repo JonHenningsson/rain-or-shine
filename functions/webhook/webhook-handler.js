@@ -222,6 +222,7 @@ async function webhook(event, response) {
           // Others - not implemented
         } else {
           r.body = 'Not implemented';
+          console.log(event);
         }
 
         console.log('Done handling webhook!');
