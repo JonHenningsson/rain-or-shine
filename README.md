@@ -36,7 +36,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. Setup FaunaDB integration
    1. Create a new database
-   1. Create a new collection User
+   1. Create a new collection "User"
    1. Create a new index "user_unique_athleteId", terms = "data.athleteId", Unique = checked
    1. Create a new SERVER KEY
 
