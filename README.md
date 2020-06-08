@@ -4,9 +4,6 @@ rain-or-shine is a weather app for Strava
 
 ## To do
 - Improve weather description templating
-- Save settings to user in db
-- Allow user to define settings such as weather provider, description template
-- Settings management page
 
 
 ## Getting started
@@ -219,11 +216,8 @@ STRAVA_API_CLIENT_ID
 STRAVA_API_CLIENT_SECRET
     <your_strava_api_client_secret>
 
-JWT_PRIVATE_KEY_BASE64
-    <your_private_key_base64_encoded>
-
-JWT_PRIVATE_KEY_BASE64
-    <your_public_key_base64_encoded>
+JWT_SECRET
+    <your_secret>
 
 STRAVA_VERIFY_TOKEN
     12345
