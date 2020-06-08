@@ -32,6 +32,7 @@ describe('adduser', () => {
           // 200 = existing user, 201 = new user
           res.status.should.be.oneOf([200, 201]);
           res.should.be.json;
+          console.log(`JWT Cookie: ${res.headers['set-cookie'][0]}`);
           done();
         });
     });

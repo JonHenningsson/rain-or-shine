@@ -4,4 +4,4 @@ title: Loading
 
 Please wait..
 
-{{< adduser >}}
+{{< adduser-js >}}

@@ -1,6 +1,9 @@
 const {
   https,
 } = require('follow-redirects');
+const {
+  JSONPath,
+} = require('jsonpath-plus');
 
 https.maxRedirects = 2;
 https.maxBodyLength = 5 * 1024 * 1024;
@@ -17,6 +20,23 @@ class NWS {
         'User-Agent': this.nws_api_user_agent,
       },
     };
+
+    this.nwsMap = {
+      description: '$.properties.textDescription',
+      temperature: '$.properties.temperature.value',
+      temperatureUnit: '$.properties.temperature.unitCode',
+      dewpoint: '$.properties.dewpoint.value',
+      dewpointUnit: '$.properties.dewpoint.unitCode',
+      windDirection: '$.properties.windDirection.value',
+      windSpeed: '$.properties.windSpeed.value',
+      windSpeedUnit: '$.properties.windSpeed.unitCode',
+      relativeHumidity: '$.properties.relativeHumidity.value',
+      relativeHumidityUnit: '$.properties.relativeHumidity.unitCode',
+      windChill: '$.properties.windChill.value',
+      windChillUnit: '$.properties.windChill.unitCode',
+      heatIndex: '$.properties.heatIndex.value',
+      heatIndexUnit: '$.properties.heatIndex.unitCode',
+    };
   }
 
   // NWS
@@ -29,6 +49,13 @@ class NWS {
   // 2. Determine best observation to retrieve (by date)
   // 3. Get observation
   //  GET https://api.weather.gov/stations/KDAL/observations/2020-05-24T11:53:00+00:00
+
+  degToCompass = (degrees) => {
+    const degreesRounded = Math.round(degrees);
+    const val = Math.floor((degreesRounded / 22.5) + 0.5);
+    const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    return arr[(val % 16)];
+  };
 
   getWeather = (coords, date) => new Promise(
     async (resolve, reject) => {
@@ -69,7 +96,34 @@ class NWS {
         searchDate = searchDate.replace('Z', '+00:00').replace('.000', '');
 
         const observation = await this.getObservation(station, searchDate);
-        resolve(observation);
+        const nwsWeather = {};
+        let jpArr = [];
+
+        Object.keys(this.nwsMap).forEach((key) => {
+          jpArr = JSONPath(this.nwsMap[key], observation);
+          if (jpArr.length > 0) {
+            if (jpArr[0] !== null) {
+              [nwsWeather[key]] = jpArr;
+            }
+          }
+        });
+
+        // normalize
+        let v;
+        Object.keys(nwsWeather).forEach(async (key) => {
+          v = nwsWeather[key];
+          if (key === 'windDirection') {
+            if (typeof v === 'number') {
+              nwsWeather[key] = this.degToCompass(v);
+            }
+          } else if (key === 'windSpeed') {
+            nwsWeather[key] = await this.normalizeAttr(v, 1);
+          } else {
+            nwsWeather[key] = await this.normalizeAttr(v);
+          }
+        });
+
+        resolve(nwsWeather);
       } catch (err) {
         reject(err);
       }
@@ -141,13 +195,15 @@ class NWS {
     },
   );
 
-  normalizeAttr = (v) => new Promise(
+  normalizeAttr = (v, decimals) => new Promise(
     async (resolve, reject) => {
       try {
+        const d = decimals || 0;
+        const pow = 10 ** d;
         let vNormalized = v;
-        // round to zero decimals
+        // round to n decimals
         if ((typeof (v) === 'number') && (!Number.isInteger(v))) {
-          vNormalized = Math.round(v);
+          vNormalized = Math.round((v + Number.EPSILON) * pow) / pow;
           // degree C
         } else if (v === 'unit:degC') {
           vNormalized = '℃';

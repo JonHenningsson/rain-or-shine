@@ -33,3 +33,52 @@ async function addUser() {
 
   return result;
 }
+
+async function getSettings() {
+  let result;
+
+  try {
+    result = await $.ajax({
+      url: '/.netlify/functions/manage-settings',
+      type: 'GET',
+      dataType: 'json',
+    });
+  } catch (err) {
+    return false;
+  }
+
+  return result;
+}
+
+async function saveSettings(settings) {
+  let result;
+  try {
+    result = await $.ajax({
+      url: '/.netlify/functions/manage-settings',
+      type: 'POST',
+      contentType: 'application/json',
+      data: settings,
+      dataType: 'json',
+    });
+  } catch (err) {
+    return false;
+  }
+
+  return result;
+}
+
+async function logout() {
+  let result;
+
+  try {
+    result = await $.ajax({
+      url: '/.netlify/functions/manage-settings?logout',
+      type: 'GET',
+      dataType: 'json',
+    });
+  } catch (err) {
+    return false;
+  }
+
+  return result;
+}

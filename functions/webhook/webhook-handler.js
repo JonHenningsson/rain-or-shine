@@ -2,59 +2,6 @@ const MyStrava = require('mystrava');
 const MyUserDB = require('myuserdb');
 const MyWeather = require('./weather');
 
-async function getWeather(coords, date, provider) {
-  return new Promise(
-    async (resolve, reject) => {
-      try {
-        const myw = new MyWeather();
-        const res = await myw.getWeatherData(coords, date, provider);
-        resolve(res);
-      } catch (err) {
-        reject(err);
-      }
-    },
-  );
-}
-
-async function createWeatherDescription(w, attrArr) {
-  return new Promise(
-    async (resolve, reject) => {
-      try {
-        let descr = '';
-
-        attrArr.forEach((attr, index) => {
-          if (Object.prototype.hasOwnProperty.call(w, attr)) {
-            if (index !== 0) {
-              descr += ', ';
-            }
-            if ((attr === 'description') && (w.description)) {
-              descr += `${w.description}`;
-            } else if ((attr === 'temperature') && (w.temperature)) {
-              descr += `${w.temperature}${w.temperature_unit}`;
-            } else if ((attr === 'heat_index') && (w.heat_index)) {
-              descr += `Feels like ${w.heat_index}${w.heat_index_unit}`;
-            } else if ((attr === 'relative_humidity') && (w.relative_humidity)) {
-              descr += `Humidity ${w.relative_humidity}${w.relative_humidity_unit}`;
-            } else if ((attr === 'wind_speed') && (w.wind_speed || w.wind_speed === 0)) {
-              descr += `Wind ${w.wind_speed} ${w.wind_speed_unit}`;
-              if (w.wind_speed !== 0) {
-                descr += ` from ${w.wind_direction}`;
-              }
-            }
-          }
-        });
-
-        descr = descr.replace(/, +$/, '');
-
-        resolve(descr);
-      } catch (err) {
-        reject(err);
-      }
-    },
-  );
-}
-
-
 async function handleNewActivity(event, response) {
   return new Promise(
     async (resolve, reject) => {
@@ -63,22 +10,24 @@ async function handleNewActivity(event, response) {
 
       // check if user exists (is in our db)
       let user;
+      let active = false;
       const udb = new MyUserDB();
       try {
         user = await udb.getUser(ownerId);
+        active = (user.data.settings.status === 'active');
       } catch (err) {
         response.body = 'Unknown user!';
         console.log('Unknown user!');
       }
 
       // check if access token is valid and get new if needed
-      if (user) {
+      if (user && active) {
         let activity;
         let accessToken;
         const mys = new MyStrava();
         let tokenInfo;
         const now = Math.floor(new Date() / 1000);
-        const diff = user.data.expires_at - now;
+        const diff = user.data.expiresAt - now;
         if (diff < 10) {
           try {
             tokenInfo = await mys.updateAccessToken(user.data.refreshToken);
@@ -95,7 +44,7 @@ async function handleNewActivity(event, response) {
 
         // use new token if present
         if (tokenInfo) {
-          accessToken = tokenInfo.accessToken;
+          accessToken = tokenInfo.access_token;
         } else {
           accessToken = user.data.accessToken;
         }
@@ -105,6 +54,7 @@ async function handleNewActivity(event, response) {
         try {
           activity = await mys.getActivity(activityId, accessToken);
         } catch (err) {
+          console.log(err);
           reject(new Error('Unable to get activity'));
         }
 
@@ -136,25 +86,14 @@ async function handleNewActivity(event, response) {
           }
 
           // get weather info
-          if (coords.latitude && date) {
+          if (coords.latitude && coords.longitude && date) {
             try {
-              const w = await getWeather(coords, date, 'NWS');
+              const myw = new MyWeather(user.data.settings);
+              await myw.getWeatherData(coords, date);
               console.log('Got weather information');
-              let existingDescr = '';
-              if (activity.description) {
-                existingDescr = activity.description;
-              }
-
-              const descrOrder = [
-                'description',
-                'temperature',
-                'heat_index',
-                'relative_humidity',
-                'wind_speed',
-              ];
-              const newDescr = await createWeatherDescription(w, descrOrder);
-              data.description = `${newDescr}\n${existingDescr}`;
+              data.description = await myw.createWeatherDescription(activity.description);
             } catch (err) {
+              console.log(err);
               reject(new Error('Unable to get weather information'));
             }
           }
