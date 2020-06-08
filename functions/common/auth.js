@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const validator = require('validator');
 
-const PRIVATE_KEY = Buffer.from(process.env.JWT_PRIVATE_KEY_BASE64, 'base64');
-const PUBLIC_KEY = Buffer.from(process.env.JWT_PUBLIC_KEY_BASE64, 'base64');
+const { JWT_SECRET } = process.env;
 const COOKIE_NAME = 'jwt';
 
 function clearJwtCookie() {
@@ -11,8 +10,8 @@ function clearJwtCookie() {
 }
 
 function createJwtCookie(athleteId) {
-  const token = jwt.sign({ athleteId }, PRIVATE_KEY, {
-    algorithm: 'RS256',
+  const token = jwt.sign({ athleteId }, JWT_SECRET, {
+    algorithm: 'HS256',
     expiresIn: '60 days',
   });
 
@@ -30,7 +29,7 @@ function isAuthenticated(headers) {
   const cookies = headers.cookie && cookie.parse(headers.cookie);
   if (cookies && validator.isJWT(cookies[COOKIE_NAME])) {
     try {
-      r = jwt.verify(cookies[COOKIE_NAME], PUBLIC_KEY);
+      r = jwt.verify(cookies[COOKIE_NAME], JWT_SECRET);
     } catch (err) {
       console.log(err.message);
     }
