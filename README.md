@@ -58,9 +58,9 @@ export NWS_API_UA_EMAIL=your_contact_email
 # export NWS_API_UA_EMAIL=your_contact_email
 ```
 
-8. Generate a private/public key pair and encode them in base64. Set the environment variables:
+8. Generate a secret key and set the environment varible to be used for JWT authentication:
 ```
-# export JWT_PRIVATE_KEY_BASE64=<your_private_key_base64_encoded> JWT_PUBLIC_KEY_BASE64=<your_public_key_base64_encoded>
+# export JWT_SECRET=<your_secret>
 ```
 
 9. If you intend to run the webhook verification test, set the required environment variable:

@@ -3,13 +3,13 @@
     // make sure requested scopes were accepted
     // string comparison may not be reliable
     if (!(getUrlParameter("scope") == "{{.Site.Params.strava.scope}}")) {
-      window.location = {{ .Site.Params.pages.error}};
+      window.location = '{{ .Site.Params.pages.connect }}error/';
     } else {
       let res = await addUser();
       if (res) {
         window.location = '{{ .Site.Params.pages.settings }}';
       } else {
-        window.location = '{{ .Site.Params.pages.error }}';
+        window.location = '{{ .Site.Params.pages.connect }}error/';
       }
     }
   });

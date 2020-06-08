@@ -3,7 +3,7 @@
     let result = await getSettings();
     //let result = await saveSettings({"setting1":2});
     if (! result) {
-      window.location = {{ .Site.Params.pages.error }};
+      window.location = '{{ .Site.Params.pages.settings }}error/';
     } else {
         $("textarea").val(JSON.stringify(result));
     };
@@ -14,7 +14,7 @@
     if (result) {
       window.location.reload();
     } else {
-      window.location = {{ .Site.Params.pages.error }};
+      window.location = '{{ .Site.Params.pages.settings }}error/';
     }
   });
 
@@ -23,7 +23,7 @@
     if (result) {
       window.location = window.location.origin;
     } else {
-      window.location = {{ .Site.Params.pages.error }};
+      window.location = '{{ .Site.Params.pages.settings }}error/';
     }
   });
 

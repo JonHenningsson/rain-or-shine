@@ -19,7 +19,5 @@ subtitle = "Add weather information to Strava activities"
   state =           "not_used"
 
 [params.pages]
-  success =   "/connect/success/"
-  error =     "/connect/error/"
-  callback =  "/connect/callback/"
+  connect = "/connect/"
   settings =  "/settings/"
