@@ -1,4 +1,4 @@
-const myhandler = require('./webhook-handler');
+const myhelper = require('./webhook-handler');
 
 exports.handler = async (event) => {
   try {
@@ -10,8 +10,9 @@ exports.handler = async (event) => {
       },
       body: '',
     };
+    response = await myhelper.webhook(event, response);
 
-    response = await myhandler.webhook(event, response);
+
     return response;
 
     // failure response

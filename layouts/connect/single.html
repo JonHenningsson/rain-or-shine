@@ -6,4 +6,8 @@
   {{.Content}}
 </div>
 
+{{ if eq .URL .Site.Params.pages.callback }}
+  {{ partial "adduser.html" . }}
+{{ end }}
+
 {{ end }}

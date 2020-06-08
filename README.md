@@ -36,7 +36,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. Setup FaunaDB integration
    1. Create a new database
-   1. Create a new collection "User"
+   1. Create a new collection User
    1. Create a new index "user_unique_athleteId", terms = "data.athleteId", Unique = checked
    1. Create a new SERVER KEY
 
@@ -58,17 +58,12 @@ export NWS_API_UA_EMAIL=your_contact_email
 # export NWS_API_UA_EMAIL=your_contact_email
 ```
 
-8. Generate a private/public key pair and encode them in base64. Set the environment variables:
-```
-# export JWT_PRIVATE_KEY_BASE64=<your_private_key_base64_encoded> JWT_PUBLIC_KEY_BASE64=<your_public_key_base64_encoded>
-```
-
-9. If you intend to run the webhook verification test, set the required environment variable:
+8. If you intend to run the webhook verification test, set the required environment variable:
 ```
 # export STRAVA_VERIFY_TOKEN=12345
 ```
 
-10. Run project locally:
+9. Run project locally:
 
 ```
 # yarn run netlify dev
@@ -79,7 +74,7 @@ The authentication page is available at the netlify dev URL, e.g. http://localho
 
 ## Running the tests
 
-Tests with mocha and chai are available in ./test. The tests are designed to simulate the Strava webhooks, user signup and settings management by triggering the Netlify functions.
+Tests with mocha and chai are available in ./test. The tests are designed to simulate the Strava webhooks and user signup by triggering the Netlify functions.
 
 ### ./test/add-user.js
 
@@ -113,17 +108,14 @@ $ ~/rain-or-shine/node_modules/.bin/mocha test/add-user.js --timeout 5000
 
   adduser
     GET /.netlify/functions/add-user
-JWT Cookie: jwt=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdGhsZXRlSWQiOjE0NjU1NDQ3LCJpYXQiOjE1OTE2MzI4MTMsImV4cCI6MTU5NjgxNjgxM30.iY1uIdb3xvNCDs9aCZXz6mwpNxnWH1Wbw-deCck-8LbQRfa4h8AUI20tZx705gcm1Itty-mV8JtBBfUwVXbFB_9RchzSKS8v3rj5Zp60OOyvVBNpnZMcVVdJjgnntRmtAPUkZt88nDbJ69w9GC5BEAsBMGaWVNmGlEAEPBSqCyxpoFVL5t_dRv_s3b6Hd9iajLpJHSuKHOUqr7rZienKz9LnnWSVuYHbqvjpu1cZDTVrt9pPN1bI5rHUWPzPJP4nRGuby5-7deq36htnK9foIkqBXG9KPYBQMYag8n4xAOPudi4ATtz5zXePbVixktXO2S-5weooEBlBW8KkCRL__AmsJmyIzG9Ftn3bR-TKuJ_ilsgtjt6l-8p0IcjiE9GuFjd-56lbReNOJntrDwYcFLnS63saqTa3PjJhhBP8b64EspNTm6mv0M_Fm7kLn7eMPmur2YXmnDwvm5ONOnDiDuBMIPBU_tsS6OxifY39m0GqLdRvGkdsH0-GpDl6l4B-HWFtaDNhT8C04CMSlwjRYQGLtPr-fcazRtH5E5-I3yTJ4yx2ef9bruhpYAINSLplyTdkj1b5n1-ScGgcow9aszOAy0hUoWzd_ffzHheZIXSgpCrtDImm0G9CfL3wZX77j1E5fvtjFARxqMlySLnXYD5ucZWTV1MhoceGx_J8jfk; Path=/; HttpOnly
-      ✓ Add user - valid (711ms)
-      ✓ Add user - invalid code (192ms)
+      ✓ Add user - valid (2760ms)
+      ✓ Add user - invalid code (520ms)
 
 
-  2 passing (907ms)
+  2 passing (3s)
 
-Done in 1.18s.
+Done in 3.55s.
 ```
-
-5. If you plan to run the settings tests later, copy the JWT cookie value.
 
 ### ./test/webhook.js
 
@@ -166,39 +158,6 @@ $ ~/rain-or-shine/node_modules/.bin/mocha test/webhook.js --timeout 10000
 Done in 3.26s.
 ```
 
-### ./test/settings.js
-
-For the settings tests you must have a user in the database with valid settings.
-
-
-1. In order to pass the JWT authentication, set the required environment variable to the value of "JWT Cookie" that was printed from add-user.
-```
-# export JWT_COOKIE="jwt=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdGhsZXRlSWQiOjE0NjU1NDQ3LCJpYXQiOjE1OTE2MzI4MTMsImV4cCI6MTU5NjgxNjgxM30.iY1uIdb3xvNCDs9aCZXz6mwpNxnWH1Wbw-deCck-8LbQRfa4h8AUI20tZx705gcm1Itty-mV8JtBBfUwVXbFB_9RchzSKS8v3rj5Zp60OOyvVBNpnZMcVVdJjgnntRmtAPUkZt88nDbJ69w9GC5BEAsBMGaWVNmGlEAEPBSqCyxpoFVL5t_dRv_s3b6Hd9iajLpJHSuKHOUqr7rZienKz9LnnWSVuYHbqvjpu1cZDTVrt9pPN1bI5rHUWPzPJP4nRGuby5-7deq36htnK9foIkqBXG9KPYBQMYag8n4xAOPudi4ATtz5zXePbVixktXO2S-5weooEBlBW8KkCRL__AmsJmyIzG9Ftn3bR-TKuJ_ilsgtjt6l-8p0IcjiE9GuFjd-56lbReNOJntrDwYcFLnS63saqTa3PjJhhBP8b64EspNTm6mv0M_Fm7kLn7eMPmur2YXmnDwvm5ONOnDiDuBMIPBU_tsS6OxifY39m0GqLdRvGkdsH0-GpDl6l4B-HWFtaDNhT8C04CMSlwjRYQGLtPr-fcazRtH5E5-I3yTJ4yx2ef9bruhpYAINSLplyTdkj1b5n1-ScGgcow9aszOAy0hUoWzd_ffzHheZIXSgpCrtDImm0G9CfL3wZX77j1E5fvtjFARxqMlySLnXYD5ucZWTV1MhoceGx_J8jfk; Path=/; HttpOnly"
-```
-
-2. You can now run the settings tests:
-```
-# yarn run mocha test/settings.js --timeout 5000
-yarn run v1.22.4
-$ ~/rain-or-shine/node_modules/.bin/mocha test/settings.js --timeout 5000
-
-
-  manage-settings
-    GET /.netlify/functions/manage-settings
-      ✓ Get settings request - valid (143ms)
-      ✓ Get settings request - invalid JWT
-      ✓ Settings logout request - valid
-    POST /.netlify/functions/manage-settings
-      ✓ Save settings request - valid (301ms)
-      ✓ Save settings request - invalid (88ms)
-
-
-  5 passing (545ms)
-
-Done in 0.81s.
-
-```
-
 ## Deployment
 
 At this point it is assumed that you have created the Fauna DB database and Strava API application.
@@ -217,13 +176,7 @@ STRAVA_API_CLIENT_ID
     <your_strava_api_client_id>
 
 STRAVA_API_CLIENT_SECRET
-    <your_strava_api_client_secret>
-
-JWT_PRIVATE_KEY_BASE64
-    <your_private_key_base64_encoded>
-
-JWT_PRIVATE_KEY_BASE64
-    <your_public_key_base64_encoded>
+    <your_strava_api_client_secret
 
 STRAVA_VERIFY_TOKEN
     12345

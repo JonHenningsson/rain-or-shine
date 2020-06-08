@@ -20,7 +20,6 @@ class MyUserDB {
     accessToken,
     refreshToken,
     expiresAt,
-    settings,
   ) => new Promise(
     (resolve, reject) => {
       this.serverClient.query(
@@ -31,7 +30,6 @@ class MyUserDB {
               accessToken,
               refreshToken,
               expiresAt,
-              settings,
             },
           },
         ),
@@ -97,31 +95,6 @@ class MyUserDB {
               accessToken,
               refreshToken,
               expiresAt,
-            },
-          },
-        ),
-      )
-        .then(
-          (res) => {
-            resolve(res);
-          },
-          (rej) => {
-            reject(rej);
-          },
-        );
-    },
-  );
-
-  updateSettings = (
-    ref,
-    settings,
-  ) => new Promise(
-    (resolve, reject) => {
-      this.serverClient.query(
-        q.Update(
-          ref, {
-            data: {
-              settings,
             },
           },
         ),

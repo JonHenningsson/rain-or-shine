@@ -1,9 +1,5 @@
-const validator = require('validator');
 const MyStrava = require('mystrava');
 const MyUserDB = require('myuserdb');
-const auth = require('../common/auth');
-const Settings = require('../common/settings');
-
 
 exports.handler = async (event) => {
   try {
@@ -22,7 +18,7 @@ exports.handler = async (event) => {
       const mys = new MyStrava();
       const stravaGeneric = await mys.stravaV3();
 
-      const { code } = validator.isAlphanumeric && event.queryStringParameters;
+      const { code } = event.queryStringParameters;
       // const { scope } = event.queryStringParameters;
       // const { state } = event.queryStringParameters;
 
@@ -63,21 +59,17 @@ exports.handler = async (event) => {
       // Save user to DB
       try {
         if (!userExists) {
-          const settings = new Settings().default;
-
           await udb.addUser(
             athleteId,
             accessToken,
             refreshToken,
             expiresAt,
-            settings,
           );
 
           statusCode = 201;
           statusMessage = 'User added';
         }
       } catch (err) {
-        console.log(err);
         throw new Error('Failed to save user to db');
       }
     } catch (err) {
@@ -90,7 +82,6 @@ exports.handler = async (event) => {
       statusCode,
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': auth.createJwtCookie(athleteId),
       },
       body: JSON.stringify({
         status: 'success',

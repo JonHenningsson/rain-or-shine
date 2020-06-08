@@ -17,14 +17,10 @@
     "geturl": "node test/scripts/gen-strava-url"
   },
   "dependencies": {
-    "cookie": "^0.4.1",
     "follow-redirects": "^1.11.0",
-    "js-quantities": "^1.7.5",
     "jsonpath-plus": "^4.0.0",
-    "jsonwebtoken": "^8.5.1",
     "mystrava": "file:functions/common/mystrava/",
-    "myuserdb": "file:functions/common/myuserdb/",
-    "validator": "^13.0.0"
+    "myuserdb": "file:functions/common/myuserdb/"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
