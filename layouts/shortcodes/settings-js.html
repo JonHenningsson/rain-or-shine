@@ -3,9 +3,9 @@
     let result = await getSettings();
     //let result = await saveSettings({"setting1":2});
     if (! result) {
-      window.location = '{{ .Site.Params.pages.settings }}error/';
-    } else {
-        $("textarea").val(JSON.stringify(result));
+j    } else {
+      $("#settings-area").val(JSON.stringify(result.settings, null, 2));
+      $("#available-settings-area").val(JSON.stringify(result.availableSettings, null, 2));
     };
 
   $("#save").click(async function(){

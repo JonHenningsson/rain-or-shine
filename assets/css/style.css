@@ -22,6 +22,16 @@
     background-color: rgba(0, 0, 0, 0.3);
   }
 
+  textarea {
+    width: 340px;
+    height: 130px;
+    resize: none;
+  }
+
+  textarea.long {
+    height: 250px;
+  }
+
   .btn {
     background-color: rgba(0, 0, 0, 0.6);
     border: none;
@@ -41,7 +51,7 @@
   }
 
   #wrapper {
-    position: fixed;
+    position: absolute;
     padding: 0;
     margin: 0;
     top: 0;

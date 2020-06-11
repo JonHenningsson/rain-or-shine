@@ -7,7 +7,13 @@ async function getSettings(athleteId) {
       try {
         const udb = new MyUserDB();
         const user = await udb.getUser(athleteId);
-        resolve(user.data.settings);
+        const mysettings = new Settings();
+        const res = {
+          settings: user.data.settings,
+          availableSettings: mysettings.available,
+        };
+        
+        resolve(res);
       } catch (err) {
         console.log(err.message);
         reject(err);
