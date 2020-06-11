@@ -1,0 +1,92 @@
+  body {
+    font-family: 'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    line-height: 1;
+    background-image: url(/img/rain-leaves.jpeg);
+    color: #fff;
+  }
+
+  h1, h2 {
+    font-weight: 300;
+    line-height: 1em;
+  }
+
+  h1 {
+    font-size: 3.5em;
+  }
+
+  h2 {
+    font-size: 2.0em;
+  }
+
+  header {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .btn {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 15px 32px;
+    font-size: 16px;
+    -moz-transition: color 0.2s ease-in-out;
+    -webkit-transition: color 0.2s ease-in-out;
+    -ms-transition: color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .btn:hover {
+    cursor: pointer;
+    color: #b8c3d0;
+  }
+
+  #wrapper {
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  #nav {
+    cursor: default;
+    line-height: 3.25em;
+    text-align: center;
+    top: 1em;
+    width: 100%;
+    z-index: 10001;
+  }
+
+  #nav a {
+    -moz-transition: color 0.2s ease-in-out;
+    -webkit-transition: color 0.2s ease-in-out;
+    -ms-transition: color 0.2s ease-in-out;
+    transition: color 0.2s ease-in-out;
+    display: inline-block;
+    padding: 0 0.75em;
+    color: inherit;
+    text-decoration: none;
+    font-size: .8em;
+  }
+
+  #nav a:hover {
+    color: #b8c3d0;
+  }
+
+  #main-wrapper {
+    padding: 5em 0 5em 0;
+    text-align: center;
+  }
+
+  #main p {
+    font-size: 1em;
+    margin-bottom: 1.75em;
+    opacity: 5;
+  }
+
+  @media (max-width: 750px) {}
+
+  @media (max-width: 400px) {}

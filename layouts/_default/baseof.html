@@ -2,10 +2,15 @@
 <html lang="{{ .Site.LanguageCode }}">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     {{ if .Site.Params.description }}<meta name="description" content="{{ .Site.Params.description }}">{{ end }}
+
+    {{ range .Site.Params.css }}
+      {{ $cssRelUrl := .link | relURL }}
+      {{ $css := resources.Get $cssRelUrl | resources.Minify | resources.Fingerprint }}
+      <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+    {{ end }}
 
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 
@@ -16,21 +21,24 @@
   </title>
   </head>
   <body>
-    <!-- Code that all your templates share, like a header -->
-    <h1 style="text-align: center;"><a href="/">{{ .Site.Title }}</a></h1>
-    <h3 style="text-align: center;">{{.Site.Params.Subtitle }}</h3>
-    <hr/>
+    <div id="wrapper">
+    {{ block "header" . }}
+    {{ end }}
 
+    <div id="main-wrapper">
     {{ block "main" . }}
     {{ end }}
+  </div>
 
     {{ block "footer" . }}
+    {{ end }}
     {{ "<!-- JS -->" | safeHTML }}
 
-    {{ range .Site.Params.javascript}}
-    <script src="{{ .link | relURL }}"></script>
+    {{ range .Site.Params.javascript }}
+      {{ $jsRelUrl := .link | relURL }}
+      {{ $js := resources.Get $jsRelUrl | resources.Minify | resources.Fingerprint }}
+      <script src="{{ $js.RelPermalink }}"></script>
     {{ end }}
-
-    {{ end }}
+  </div>
   </body>
 </html>

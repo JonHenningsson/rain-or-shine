@@ -1,0 +1,12 @@
+{{ define "header" }}
+<header id="header">
+  <nav id="nav">
+    <a href="{{ .Site.Home.RelPermalink | relURL}}">{{ .Site.Home.Title }}</a>
+    {{ range (.Site.Sections.ByParam "navOrder") }}
+    {{ if .Params.navOrder }}
+    <a href="{{ .RelPermalink | relURL}}">{{ .Title }}</a>
+    {{ end }}
+    {{ end }}
+  </nav>
+</header>
+{{ end }}

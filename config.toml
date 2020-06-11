@@ -1,12 +1,16 @@
 languageCode = "en-us"
 title = "rain-or-shine"
 description = "rain-or-shine is a weather app for Strava"
+assetDir = "assets"
 
 [params]
 subtitle = "Add weather information to Strava activities"
 
 [[params.javascript]]
   link = "js/script.js"
+
+[[params.css]]
+  link = "css/style.css"
 
 [params.strava]
   oauth_url =       "https://www.strava.com/oauth/authorize"

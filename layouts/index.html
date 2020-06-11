@@ -1,8 +1,9 @@
 
 {{ define "main" }}
 
-<div>
-  {{.Content}}
+<div id="main">
+  <h1>{{ .Site.Title }}</h1>
+  <p>{{.Site.Params.Subtitle }}</p>
 </div>
 
 <div>
