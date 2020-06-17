@@ -1,3 +1,4 @@
+const debug = require('debug')('MyUserDB');
 const faunadb = require('faunadb');
 
 const q = faunadb.query;

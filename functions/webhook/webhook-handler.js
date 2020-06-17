@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:webhook-handler');
 const MyStrava = require('mystrava');
 const MyUserDB = require('myuserdb');
 const MyWeather = require('./weather');

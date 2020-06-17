@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:auth');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const validator = require('validator');

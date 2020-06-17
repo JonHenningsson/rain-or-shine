@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:settings-handler');
 const MyUserDB = require('myuserdb');
 const Settings = require('../common/settings');
 
@@ -12,7 +13,7 @@ async function getSettings(athleteId) {
           settings: user.data.settings,
           availableSettings: mysettings.available,
         };
-        
+
         resolve(res);
       } catch (err) {
         console.log(err.message);

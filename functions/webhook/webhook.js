@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:webhook');
 const myhandler = require('./webhook-handler');
 
 exports.handler = async (event) => {

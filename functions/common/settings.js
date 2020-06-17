@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:Settings');
 class Settings {
   constructor() {
     this.available = {

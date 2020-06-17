@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:NWS');
 const {
   https,
 } = require('follow-redirects');

@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:MyWeather');
 const qty = require('js-quantities');
 const NWS = require('./nws');
 

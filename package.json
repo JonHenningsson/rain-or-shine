@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "cookie": "^0.4.1",
+    "debug": "^4.1.1",
     "follow-redirects": "^1.11.0",
     "hugo-bin": "^0.60.0",
     "js-quantities": "^1.7.5",

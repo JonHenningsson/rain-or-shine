@@ -1,3 +1,4 @@
+const debug = require('debug')('MyStrava');
 const strava = require('strava-v3');
 
 const { STRAVA_API_CLIENT_ID } = process.env;

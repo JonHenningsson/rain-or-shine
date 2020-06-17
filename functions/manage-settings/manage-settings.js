@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:manage-settings');
 const auth = require('../common/auth');
 const settingsHandler = require('./settings-handler');
 

@@ -1,3 +1,4 @@
+const debug = require('debug')('rain-or-shine:add-user');
 const validator = require('validator');
 const MyStrava = require('mystrava');
 const MyUserDB = require('myuserdb');
