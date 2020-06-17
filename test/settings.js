@@ -28,7 +28,8 @@ describe('manage-settings', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          res.body.should.have.property('weatherProvider');
+          res.body.should.have.property('settings');
+          res.body.should.have.property('availableSettings');
           done();
         });
     });

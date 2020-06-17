@@ -85,7 +85,7 @@ For the add-user tests you must have a Strava profile to sign in with.
 1. Set the required environment variables:
 ```
 # export NETLIFY_URL="http://localhost:8888"
-# export STRAVA_API_CLIENT_ID=46844
+# export STRAVA_API_CLIENT_ID=<your_strava_api_client_id>
 ```
 
 2. Obtain a Strava login url:

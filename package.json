@@ -19,10 +19,11 @@
   "dependencies": {
     "cookie": "^0.4.1",
     "follow-redirects": "^1.11.0",
+    "hugo-bin": "^0.60.0",
     "js-quantities": "^1.7.5",
     "jsonpath-plus": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mystrava": "file:functions/common/mystrava/",
+    "mystrava": "file:./functions/common/mystrava/",
     "myuserdb": "file:functions/common/myuserdb/",
     "validator": "^13.0.0"
   },
@@ -34,7 +35,6 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-import": "^2.20.2",
-    "hugo-bin": "^0.60.0",
     "mocha": "^7.1.2",
     "netlify-cli": "^2.50.0"
   }
