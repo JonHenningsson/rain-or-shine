@@ -7,6 +7,7 @@ const Settings = require('../common/settings');
 
 
 exports.handler = async (event) => {
+  debug('Handling add-user request..');
   try {
     // default response data
     let statusCode = 200;
@@ -37,7 +38,7 @@ exports.handler = async (event) => {
       payload = await strava.athlete.get({});
       athleteId = payload.id;
     } catch (err) {
-      console.log(err);
+      debug('Error when getting strava athlete: %s', err.message);
       throw new Error('Failed to get Strava athlete information');
     }
 
@@ -56,7 +57,6 @@ exports.handler = async (event) => {
         statusMessage = 'User already exists';
       } catch (err) {
         if (err.name !== 'NotFound') {
-          console.log(err);
           throw new Error('Failed to get user from db');
         }
       }
@@ -78,15 +78,14 @@ exports.handler = async (event) => {
           statusMessage = 'User added';
         }
       } catch (err) {
-        console.log(err);
         throw new Error('Failed to save user to db');
       }
     } catch (err) {
-      console.log(err);
       throw new Error('Failed to add user');
     }
 
     // HTTP Response
+    debug('Handled request successfully');
     return {
       statusCode,
       headers: {
@@ -99,7 +98,7 @@ exports.handler = async (event) => {
       }),
     };
   } catch (err) {
-    console.log(err);
+    debug('Error: %O', err);
     return {
       statusCode: 500,
       headers: {

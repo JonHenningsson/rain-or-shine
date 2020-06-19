@@ -5100,11 +5100,19 @@ mute-stream@0.0.8:
 "mystrava@file:./functions/common/mystrava":
   version "1.0.2"
   dependencies:
+    debug "^4.1.1"
     strava-v3 "^2.0.5"
 
-"myuserdb@file:functions/common/myuserdb":
+"myuserdb@file:./functions/common/myuserdb":
   version "1.0.0"
   dependencies:
+    debug "^4.1.1"
+    faunadb "2.13.1"
+
+"myuserdb@file:./functions/common/myuserdb/":
+  version "1.0.0"
+  dependencies:
+    debug "^4.1.1"
     faunadb "2.13.1"
 
 nanomatch@^1.2.9:

@@ -1,4 +1,5 @@
 const debug = require('debug')('rain-or-shine:NWS');
+const validator = require('validator');
 const {
   https,
 } = require('follow-redirects');
@@ -12,8 +13,13 @@ https.maxBodyLength = 5 * 1024 * 1024;
 const NWS_API_UA_EMAIL = process.env.NWS_API_UA_EMAIL || '';
 const NWS_API_UA_WEBSITE = process.env.NWS_API_UA_URL || process.env.URL || '';
 
+debug('NWS_API_UA_EMAIL: %s', NWS_API_UA_EMAIL);
+debug('NWS_API_UA_WEBSITE: %s', NWS_API_UA_WEBSITE);
+
 class NWS {
   constructor() {
+    const edebug = debug.extend('constructor');
+    edebug('Constructor');
     this.nws_api_user_agent = `(${NWS_API_UA_WEBSITE}, ${NWS_API_UA_EMAIL})`;
     this.baseurl = 'https://api.weather.gov';
     this.options = {
@@ -52,28 +58,39 @@ class NWS {
   //  GET https://api.weather.gov/stations/KDAL/observations/2020-05-24T11:53:00+00:00
 
   degToCompass = (degrees) => {
+    const edebug = debug.extend('degToCompass');
+    edebug('Attempting to convert degrees: %d ..', degrees);
     const degreesRounded = Math.round(degrees);
     const val = Math.floor((degreesRounded / 22.5) + 0.5);
     const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-    return arr[(val % 16)];
+    const dir = arr[(val % 16)];
+    edebug('Result: %s ..', dir);
+    return dir;
   };
 
   getWeather = (coords, date) => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('getWeather');
+      edebug('Got coordinates: %o', coords);
+      edebug('Got date: %o', date);
       try {
         // get station closest to coordinates
+        edebug('Attempting to get nearest weather station');
         const station = await this.getStation(coords);
-
         let searchDate = date;
         const now = new Date();
         const latestObsDate = new Date();
         latestObsDate.setMinutes(53);
+        latestObsDate.setSeconds(0);
 
+        edebug('Attempting to determine date for observation..');
         if (now.getMinutes() < 53) {
           latestObsDate.setHours(now.getHours() - 1);
         }
+        edebug('Latest observation: %o', latestObsDate);
 
-        const diff = latestObsDate.getTime() - date.getTime();
+        const diff = (latestObsDate.getTime() - date.getTime()) / 1000;
+        edebug('Diff: %d', diff);
 
         // if start is less than 3600s newer or less than 30m older than latest observation
         if ((diff > -3600) && (diff <= 1800)) {
@@ -95,7 +112,7 @@ class NWS {
 
         searchDate = searchDate.toISOString();
         searchDate = searchDate.replace('Z', '+00:00').replace('.000', '');
-
+        edebug('Attempting to get observation');
         const observation = await this.getObservation(station, searchDate);
         const nwsWeather = {};
         let jpArr = [];
@@ -114,9 +131,7 @@ class NWS {
         Object.keys(nwsWeather).forEach(async (key) => {
           v = nwsWeather[key];
           if (key === 'windDirection') {
-            if (typeof v === 'number') {
-              nwsWeather[key] = this.degToCompass(v);
-            }
+            nwsWeather[key] = this.degToCompass(v);
           } else if (key === 'windSpeed') {
             nwsWeather[key] = await this.normalizeAttr(v, 1);
           } else {
@@ -134,12 +149,15 @@ class NWS {
 
   getStation = (coords) => new Promise(
     (resolve, reject) => {
+      const edebug = debug.extend('getStation');
+      edebug('Got coordinates: %o', coords);
       try {
         const lat = coords.latitude;
         const lon = coords.longitude;
 
         const url = `${this.baseurl}/points/${lat},${lon}/stations`;
 
+        edebug('Attempting to get stations: %s', url);
         https.get(url, this.options, (resp) => {
           let data = '';
 
@@ -150,15 +168,18 @@ class NWS {
           resp.on('end', () => {
             // do stuff with the data here
             const resTable = JSON.parse(data);
+            edebug('Success: %O', resTable);
             if (resTable.features) {
               const station = resTable.features[0].properties.stationIdentifier;
               resolve(station);
             }
           });
         }).on('error', (err) => {
+          edebug('Failed: %s', err.message);
           reject(err);
         });
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
@@ -167,9 +188,12 @@ class NWS {
 
   getObservation = (station, date) => new Promise(
     (resolve, reject) => {
+      const edebug = debug.extend('getObservation');
+      edebug('Got station: %s', station);
+      edebug('Got date: %s', date);
       try {
         const url = `${this.baseurl}/stations/${station}/observations/${date}`;
-        console.log(url);
+        edebug('Attempting to get observation: %s', url);
 
         https.get(url, this.options, (resp) => {
           let data = '';
@@ -182,28 +206,35 @@ class NWS {
             // do stuff with the data here
             const resTable = JSON.parse(data);
             if (resTable.properties) {
+              edebug('Success: %O', resTable);
               resolve(resTable);
             } else {
               reject(new Error('Unable to get observation'));
             }
           });
         }).on('error', (err) => {
+          edebug('Failed: %s', err.message);
           reject(err);
         });
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
   );
 
-  normalizeAttr = (v, decimals) => new Promise(
+  normalizeAttr = (val, decimals) => new Promise(
     async (resolve, reject) => {
+      let v = val;
+      const edebug = debug.extend('normalizeAttr');
+      edebug('Attempting to normalize: %s', v);
       try {
-        const d = decimals || 0;
-        const pow = 10 ** d;
         let vNormalized = v;
         // round to n decimals
-        if ((typeof (v) === 'number') && (!Number.isInteger(v))) {
+        if ((validator.isNumeric(v)) && (!Number.isInteger(v))) {
+          v = parseFloat(v);
+          const d = decimals || 0;
+          const pow = 10 ** d;
           vNormalized = Math.round((v + Number.EPSILON) * pow) / pow;
           // degree C
         } else if (v === 'unit:degC') {
@@ -211,12 +242,17 @@ class NWS {
           // unit m/s
         } else if (v === 'unit:m_s-1') {
           vNormalized = 'm/s';
+          // unit km/h
+        } else if (v === 'unit:km_h-1') {
+          vNormalized = 'km/h';
           // unit %
         } else if (v === 'unit:percent') {
           vNormalized = '%';
         }
+        edebug('Result: %s', vNormalized);
         resolve(vNormalized);
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },

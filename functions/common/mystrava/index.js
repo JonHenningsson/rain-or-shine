@@ -1,14 +1,22 @@
-const debug = require('debug')('MyStrava');
+const debug = require('debug')('rain-or-shine:MyStrava');
 const strava = require('strava-v3');
+
+const sdebug = debug.extend('sensitive');
 
 const { STRAVA_API_CLIENT_ID } = process.env;
 const { STRAVA_API_CLIENT_SECRET } = process.env;
 const { STRAVA_VERIFY_TOKEN } = process.env;
 const { STRAVA_REDIRECT_URI } = process.env;
 
+debug('STRAVA_API_CLIENT_ID: %s', STRAVA_API_CLIENT_ID);
+sdebug('STRAVA_API_CLIENT_SECRET: %s', STRAVA_API_CLIENT_SECRET);
+sdebug('STRAVA_VERIFY_TOKEN: %s', STRAVA_VERIFY_TOKEN);
+debug('STRAVA_REDIRECT_URI: %s', STRAVA_REDIRECT_URI);
 
 class MyStrava {
   constructor() {
+    const edebug = debug.extend('constructor');
+    edebug('Constructor');
     this.strava = strava;
     this.client_id = STRAVA_API_CLIENT_ID;
     this.client_secret = STRAVA_API_CLIENT_SECRET;
@@ -26,12 +34,15 @@ class MyStrava {
 
   isValidationReq = (event) => new Promise(
     (resolve) => {
+      const edebug = debug.extend('isValidationReq');
+      edebug('Evaluating request..');
       if (
         event.httpMethod === 'GET'
           && event.queryStringParameters['hub.mode'] === 'subscribe'
           && event.queryStringParameters['hub.challenge']
           && event.queryStringParameters['hub.verify_token']
       ) {
+        edebug('True!');
         resolve(true);
       } else {
         resolve(false);
@@ -41,6 +52,8 @@ class MyStrava {
 
   isActivityCreateReq = (event) => new Promise(
     (resolve) => {
+      const edebug = debug.extend('isActivityCreateReq');
+      edebug('Evaluating request..');
       const json = JSON.parse(event.body);
       if (
         event.httpMethod === 'POST'
@@ -48,6 +61,7 @@ class MyStrava {
           && json.aspect_type === 'create'
           && json.object_id
       ) {
+        edebug('True!');
         resolve(true);
       } else {
         resolve(false);
@@ -57,6 +71,8 @@ class MyStrava {
 
   isAthleteUpdateAuthFalseReq = (event) => new Promise(
     (resolve) => {
+      const edebug = debug.extend('isAthleteUpdateAuthFalseReq');
+      edebug('Evaluating request..');
       const json = JSON.parse(event.body);
       if (
         event.httpMethod === 'POST'
@@ -65,6 +81,7 @@ class MyStrava {
           && json.object_id === json.owner_id
           && json.updates.authorized === 'false'
       ) {
+        edebug('True!');
         resolve(true);
       } else {
         resolve(false);
@@ -74,10 +91,13 @@ class MyStrava {
 
   updateAccessToken = (refreshToken) => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('updateAccessToken');
       try {
+        edebug('Attempting to update access token with refreshToken: %s', refreshToken);
         const payload = await this.strava.oauth.refreshToken(refreshToken);
         resolve(payload);
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
@@ -85,13 +105,17 @@ class MyStrava {
 
   getActivity = (activityId, accessToken) => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('getActivity');
       try {
+        edebug('Attempting to get activity for activityId: %s', activityId);
         const payload = await this.strava.activities.get({
           id: activityId,
           access_token: accessToken,
         });
+        edebug('Success: %O', payload);
         resolve(payload);
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
@@ -99,13 +123,17 @@ class MyStrava {
 
   updateActivity = (activityId, accessToken, data) => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('updateActivity');
       try {
         const dataNew = data;
         dataNew.id = activityId;
         dataNew.access_token = accessToken;
+        edebug('Attempting to update activity with data: %O', dataNew);
         const payload = await this.strava.activities.update(dataNew);
+        edebug('Success!');
         resolve(payload);
       } catch (err) {
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
@@ -113,6 +141,8 @@ class MyStrava {
 
   stravaV3 = () => new Promise(
     (resolve) => {
+      const edebug = debug.extend('stravaV3');
+      edebug('Returning strava object..');
       resolve(this.strava);
     },
   );

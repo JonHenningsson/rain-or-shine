@@ -4,6 +4,8 @@ const MyUserDB = require('myuserdb');
 const MyWeather = require('./weather');
 
 async function handleNewActivity(event, response) {
+  const edebug = debug.extend('handleNewActivity');
+  edebug('Handling request..');
   return new Promise(
     async (resolve, reject) => {
       const json = JSON.parse(event.body);
@@ -18,7 +20,6 @@ async function handleNewActivity(event, response) {
         active = (user.data.settings.status === 'active');
       } catch (err) {
         response.body = 'Unknown user!';
-        console.log('Unknown user!');
       }
 
       // check if access token is valid and get new if needed
@@ -55,7 +56,6 @@ async function handleNewActivity(event, response) {
         try {
           activity = await mys.getActivity(activityId, accessToken);
         } catch (err) {
-          console.log(err);
           reject(new Error('Unable to get activity'));
         }
 
@@ -91,10 +91,8 @@ async function handleNewActivity(event, response) {
             try {
               const myw = new MyWeather(user.data.settings);
               await myw.getWeatherData(coords, date);
-              console.log('Got weather information');
               data.description = await myw.createWeatherDescription(activity.description);
             } catch (err) {
-              console.log(err);
               reject(new Error('Unable to get weather information'));
             }
           }
@@ -104,10 +102,8 @@ async function handleNewActivity(event, response) {
         try {
           if (data.description) {
             await mys.updateActivity(activityId, accessToken, data);
-            console.log('Updated activity!');
           }
         } catch (err) {
-          console.log(err);
           reject(new Error('Unable to update activity'));
         }
       }
@@ -118,6 +114,8 @@ async function handleNewActivity(event, response) {
 }
 
 async function handleValidationReq(event, response) {
+  const edebug = debug.extend('handleValidationReq');
+  edebug('Attempting to verify validation request..');
   return new Promise(
     async (resolve, reject) => {
       const mys = new MyStrava();
@@ -134,13 +132,14 @@ async function handleValidationReq(event, response) {
       } else {
         reject(new Error('Verify token incorrect'));
       }
-      console.log('Handled validation request!');
       resolve(response);
     },
   );
 }
 
 async function handleAthleteAuthFalse(event, response) {
+  const edebug = debug.extend('handleAthleteAuthFalse');
+  edebug('Attempting to remove user from db..');
   return new Promise(
     async (resolve, reject) => {
       const json = JSON.parse(event.body);
@@ -152,17 +151,13 @@ async function handleAthleteAuthFalse(event, response) {
         user = await udb.getUser(ownerId);
       } catch (err) {
         response.body = 'Unknown user!';
-        console.log('Unknown user!');
       }
 
       if (user) {
         try {
           await udb.delUser(user.ref);
-          console.log('Removed user from DB');
         } catch (err) {
-          console.log(err);
           response.body = 'Unable to remove user from db!';
-          console.log(response.body);
           reject(response);
         }
       }
@@ -173,7 +168,9 @@ async function handleAthleteAuthFalse(event, response) {
 
 
 async function webhook(event, response) {
-  console.log('Webhook event being handled..');
+  const edebug = debug.extend('webhook');
+  edebug('Attempting to handle webhook event..');
+  edebug('NODE_ENV: %s', process.env.NODE_ENV);
   return new Promise(
     async (resolve, reject) => {
       try {
@@ -201,10 +198,8 @@ async function webhook(event, response) {
           // Others - not implemented
         } else {
           r.body = 'Not implemented';
-          console.log(event);
+          edebug('No handling for this event..');
         }
-
-        console.log('Done handling webhook!');
         // Resolve webhook helper promise
         resolve(r);
       } catch (err) {

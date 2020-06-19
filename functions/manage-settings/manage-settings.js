@@ -3,6 +3,7 @@ const auth = require('../common/auth');
 const settingsHandler = require('./settings-handler');
 
 exports.handler = async (event) => {
+  debug('Handling manage-settings request..');
   try {
     // default success response data
     const response = {
@@ -16,6 +17,7 @@ exports.handler = async (event) => {
     const athleteId = auth.isAuthenticated(event.headers);
 
     if (!athleteId) {
+      debug('Not authenticated');
       response.statusCode = 403;
     }
 

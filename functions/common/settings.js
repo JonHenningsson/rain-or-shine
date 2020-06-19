@@ -1,6 +1,9 @@
 const debug = require('debug')('rain-or-shine:Settings');
+
 class Settings {
   constructor() {
+    const edebug = debug.extend('constructor');
+    edebug('Constructor');
     this.available = {
       weatherProvider: {
         description: 'Weather data source',
@@ -69,7 +72,9 @@ class Settings {
 
   isValid = (settings) => new Promise(
     (resolve) => {
+      const edebug = debug.extend('isValid');
       try {
+        edebug('Evaluating settings: %O', settings);
         if (typeof settings === 'object') {
           let availableArr;
           // validate all known settings

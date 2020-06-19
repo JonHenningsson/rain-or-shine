@@ -4,6 +4,10 @@ const NWS = require('./nws');
 
 class MyWeather {
   constructor(userSettings) {
+    const edebug = debug.extend('constructor');
+    edebug('Constructor');
+    edebug('Initialized constructor with settings: %O', userSettings);
+
     this.userSettings = userSettings;
     this.descrOrder = [
       'description',
@@ -16,6 +20,10 @@ class MyWeather {
 
   getWeatherData = (coords, date) => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('getWeatherData');
+      edebug('Got coordinates: %o', coords);
+      edebug('Got date: %o', date);
+      edebug('Getting weather based on provider in settings..');
       try {
         switch (this.userSettings.weatherProvider) {
           case 'NWS':
@@ -33,7 +41,7 @@ class MyWeather {
 
         resolve(this.convert());
       } catch (err) {
-        console.log(err);
+        edebug('Error: %s', err.message);
         reject(err);
       }
     },
@@ -41,6 +49,7 @@ class MyWeather {
 
   convert = () => new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('convert');
       try {
         let unit;
         let newUnit;
@@ -55,6 +64,8 @@ class MyWeather {
           windSpeedUnit: 'windSpeed',
         };
 
+
+        edebug('Converting units if needed..');
         Object.keys(this.userSettings).forEach(async (key) => {
           if (Object.prototype.hasOwnProperty.call(this.weather, key)) {
             if (this.userSettings[key] !== this.weather[key]) {
@@ -74,6 +85,9 @@ class MyWeather {
 
                 this.weather[tempUnits[key]] = Math.round(qty(qtyFrom).to(qtyTo).scalar);
                 this.weather[key] = newUnit;
+
+                edebug('Old: %d %s', val, unit);
+                edebug('New: %d %s', this.weather[tempUnits[key]], this.weather[key]);
 
               // windspeed unit conversion
               } else if (Object.prototype.hasOwnProperty.call(windUnits, key)) {
@@ -96,6 +110,9 @@ class MyWeather {
                 const cVal = Math.round((qty(qtyFrom).to(qtyTo).scalar + Number.EPSILON) * 10) / 10;
                 this.weather[windUnits[key]] = cVal;
                 this.weather[key] = newUnit;
+
+                edebug('Old: %d %s', val, unit);
+                edebug('New: %d %s', this.weather[windUnits[key]], this.weather[key]);
               }
             }
           }
@@ -103,14 +120,22 @@ class MyWeather {
 
         resolve(this.weather);
       } catch (err) {
-        console.log(err);
+        edebug('Error: %s', err.message);
         reject(err);
       }
     },
   );
 
-  createWeatherDescription = (existingDescr) => new Promise(
+  createWeatherDescription = (ed) => new Promise(
     async (resolve, reject) => {
+      let existingDescr = ed;
+      const edebug = debug.extend('createWeatherDescription');
+      edebug('Got existingDescr: %s', existingDescr);
+      if (existingDescr === null) {
+        edebug('Got null, setting empty string');
+        existingDescr = '';
+      }
+      edebug('Attempting to create weather description..');
       try {
         const e = existingDescr;
         const attrArr = this.descrOrder;
@@ -149,10 +174,10 @@ class MyWeather {
             newDescr = `${e}\n${newDescr}`;
           }
         }
-
+        edebug('Created weather description: %s', newDescr);
         resolve(newDescr);
       } catch (err) {
-        console.log(err);
+        edebug('Error: %s', err.message);
         reject(err);
       }
     },

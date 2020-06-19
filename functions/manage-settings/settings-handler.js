@@ -5,6 +5,8 @@ const Settings = require('../common/settings');
 async function getSettings(athleteId) {
   return new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('getSettings');
+      edebug('Attempting to get settings for athleteId: %s', athleteId);
       try {
         const udb = new MyUserDB();
         const user = await udb.getUser(athleteId);
@@ -13,10 +15,9 @@ async function getSettings(athleteId) {
           settings: user.data.settings,
           availableSettings: mysettings.available,
         };
-
         resolve(res);
       } catch (err) {
-        console.log(err.message);
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },
@@ -26,9 +27,10 @@ async function getSettings(athleteId) {
 async function saveSettings(athleteId, settings) {
   return new Promise(
     async (resolve, reject) => {
+      const edebug = debug.extend('saveSettings');
+      edebug('Attempting to update settings for athleteId: %s', athleteId);
       try {
         const mysettings = new Settings();
-        // to-do:sanitize and make sure settings are valid
         const udb = new MyUserDB();
         const user = await udb.getUser(athleteId);
         if (await mysettings.isValid(settings)) {
@@ -39,7 +41,7 @@ async function saveSettings(athleteId, settings) {
           throw new Error('Unable to save settings');
         }
       } catch (err) {
-        console.log(err.message);
+        edebug('Failed: %s', err.message);
         reject(err);
       }
     },

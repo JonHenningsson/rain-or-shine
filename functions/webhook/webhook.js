@@ -2,6 +2,7 @@ const debug = require('debug')('rain-or-shine:webhook');
 const myhandler = require('./webhook-handler');
 
 exports.handler = async (event) => {
+  debug('Handling webhook request..');
   try {
     // default success response data
     let response = {
@@ -13,12 +14,12 @@ exports.handler = async (event) => {
     };
 
     response = await myhandler.webhook(event, response);
+    debug('HTTP response: %O', response);
     return response;
 
     // failure response
   } catch (err) {
-    console.log('Error during handling of webhook request');
-    console.log(err);
+    debug('Error during handling of request: %O', err);
     return {
       statusCode: 500,
       headers: {
