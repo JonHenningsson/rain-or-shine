@@ -31,7 +31,7 @@
     },
     {
       // browser scripts
-      "files": ["scripts/js/*", "assets/js/*"],
+      "files": ["static/js/*", "assets/js/*"],
       "env": { "browser": true, "jquery": true },
       "rules": {"no-unused-vars": "off", "no-console": "error"}
     },
