@@ -73,17 +73,20 @@ async function handleNewActivity(event, response) {
               longitude: activity.start_longitude,
             };
           } else {
-            reject(new Error('No latitude or longitude found'));
+            edebug('No latitude or longitude found');
+            resolve(response);
           }
 
           if (activity.start_date) {
             try {
               date = new Date(activity.start_date);
             } catch (err) {
-              reject(new Error('Unable to identify date and time of activity'));
+              edebug('Unable to identify date and time of activity');
+              resolve(response);
             }
           } else {
-            reject(new Error('No start date found'));
+            edebug('No start date found');
+            resolve(response);
           }
 
           // get weather info
