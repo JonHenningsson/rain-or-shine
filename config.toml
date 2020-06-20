@@ -8,6 +8,11 @@ subtitle = "Add weather information to Strava activities"
 
 [[params.javascript]]
   link = "js/script.js"
+  id = "script"
+
+[[params.javascript]]
+  link = "js/cookeinfo.js"
+  id = "cookieinfo"
 
 [[params.css]]
   link = "css/style.css"

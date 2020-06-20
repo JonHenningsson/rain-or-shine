@@ -37,7 +37,7 @@
     {{ range .Site.Params.javascript }}
       {{ $jsRelUrl := .link | relURL }}
       {{ $js := resources.Get $jsRelUrl | resources.Minify | resources.Fingerprint }}
-      <script src="{{ $js.RelPermalink }}"></script>
+      <script src="{{ $js.RelPermalink }}" id="{{ .id }}"></script>
     {{ end }}
   </div>
   </body>
