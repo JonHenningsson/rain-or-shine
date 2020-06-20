@@ -1,10 +1,10 @@
 # rain-or-shine
 
-rain-or-shine is a weather app for Strava
+rain-or-shine is a web application for automatically adding weather information to Strava activities. The following weather providers are currently supported:
 
-## To do
-- Improve weather description templating
-
+| Provider                  | Area                 |
+| -------------             | -------------        |
+| National Weather Service  | United States        |
 
 ## Getting started
 
