@@ -117,10 +117,12 @@ class NWS {
         const nwsWeather = {};
         let jpArr = [];
 
+        // to-do: Do not add units if the value is empty or null
         Object.keys(this.nwsMap).forEach((key) => {
           jpArr = JSONPath(this.nwsMap[key], observation);
           if (jpArr.length > 0) {
             if (jpArr[0] !== null) {
+              edebug('JSONPath: %s, value: %s', this.nwsMap[key], jpArr[0]);
               [nwsWeather[key]] = jpArr;
             }
           }
@@ -231,7 +233,7 @@ class NWS {
       try {
         let vNormalized = v;
         // round to n decimals
-        if ((validator.isNumeric(v)) && (!Number.isInteger(v))) {
+        if ((validator.isNumeric(v.toString())) && (!Number.isInteger(v))) {
           v = parseFloat(v);
           const d = decimals || 0;
           const pow = 10 ** d;

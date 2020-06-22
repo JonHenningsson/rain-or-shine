@@ -90,7 +90,9 @@ class MyWeather {
                 edebug('New: %d %s', this.weather[tempUnits[key]], this.weather[key]);
 
               // windspeed unit conversion
-              } else if (Object.prototype.hasOwnProperty.call(windUnits, key)) {
+              // do not check if weather is present here. move to NWS class instead.
+            } else if (Object.prototype.hasOwnProperty.call(windUnits, key) &&
+          this.weather[windUnits[key]]) {
                 unit = this.weather[key];
                 val = this.weather[windUnits[key]];
                 newUnit = this.userSettings[key];
