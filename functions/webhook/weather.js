@@ -26,18 +26,17 @@ class MyWeather {
       edebug('Getting weather based on provider in settings..');
       try {
         switch (this.userSettings.weatherProvider) {
-          case 'NWS':
-            {
-              const mynws = new NWS();
-              this.weather = await mynws.getWeather(coords, date);
-            }
+          case 'NWS': {
+            const mynws = new NWS();
+            this.weather = await mynws.getWeather(coords, date);
+          }
             break;
           default:
             throw new Error('Unknown weather provider in settings');
         }
 
         /* To-do: Use Settings -> weatherProps to sanitize the weather data and only return
-        * what is known */
+         * what is known */
 
         resolve(this.convert());
       } catch (err) {
@@ -80,8 +79,8 @@ class MyWeather {
                 qtyFrom = `${val} ${qtyFrom}`;
 
                 qtyTo = (newUnit === '℃' && 'tempC')
-                    || (newUnit === '℉' && 'tempF')
-                    || (newUnit === 'K' && 'tempK');
+                  || (newUnit === '℉' && 'tempF')
+                  || (newUnit === 'K' && 'tempK');
 
                 this.weather[tempUnits[key]] = Math.round(qty(qtyFrom).to(qtyTo).scalar);
                 this.weather[key] = newUnit;
@@ -89,10 +88,10 @@ class MyWeather {
                 edebug('Old: %d %s', val, unit);
                 edebug('New: %d %s', this.weather[tempUnits[key]], this.weather[key]);
 
-              // windspeed unit conversion
-              // do not check if weather is present here. move to NWS class instead.
-            } else if (Object.prototype.hasOwnProperty.call(windUnits, key) &&
-          this.weather[windUnits[key]]) {
+                // windspeed unit conversion
+                // do not check if weather is present here. move to NWS class instead.
+              } else if (Object.prototype.hasOwnProperty.call(windUnits, key)
+                && this.weather[windUnits[key]]) {
                 unit = this.weather[key];
                 val = this.weather[windUnits[key]];
                 newUnit = this.userSettings[key];
@@ -104,9 +103,9 @@ class MyWeather {
                 qtyFrom = `${val} ${qtyFrom}`;
 
                 qtyTo = (newUnit === 'm/s' && 'm/s')
-                    || (newUnit === 'mph' && 'mph')
-                    || (newUnit === 'km/h' && 'km/h')
-                    || (newUnit === 'kn' && 'kn');
+                  || (newUnit === 'mph' && 'mph')
+                  || (newUnit === 'km/h' && 'km/h')
+                  || (newUnit === 'kn' && 'kn');
 
                 // one decimal for windspeed
                 const cVal = Math.round((qty(qtyFrom).to(qtyTo).scalar + Number.EPSILON) * 10) / 10;

@@ -100,7 +100,7 @@ class NWS {
           // if start is 30m older than latest observation
         } else if (diff > 1800) {
           searchDate.setMinutes(53);
-          searchDate.setSeconds(0);0
+          searchDate.setSeconds(0);
           searchDate.setMilliseconds(0);
 
           // if minute is 23 or earlier, use observation from previous hour.
