@@ -193,6 +193,8 @@ async function webhook(event, response) {
           }
           // athlete deauthorized app
         } else if (await mys.isAthleteUpdateAuthFalseReq(event)) {
+          // this doesn't work! lambda stops processing when response is returned.
+          // to-do: move this handler to a separate function
           if (!(process.env.NODE_ENV === 'production')) {
             r = await handleAthleteAuthFalse(event, r);
           } else {
