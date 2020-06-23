@@ -111,6 +111,7 @@ async function handleNewActivity(event, response) {
         }
       }
 
+      edebug('Resolving promise');
       resolve(response);
     },
   );
