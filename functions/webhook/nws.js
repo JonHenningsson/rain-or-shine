@@ -82,6 +82,7 @@ class NWS {
         const latestObsDate = new Date();
         latestObsDate.setMinutes(53);
         latestObsDate.setSeconds(0);
+        latestObsDate.setMilliseconds(0);
 
         edebug('Attempting to determine date for observation..');
         if (now.getMinutes() < 53) {
@@ -99,7 +100,8 @@ class NWS {
           // if start is 30m older than latest observation
         } else if (diff > 1800) {
           searchDate.setMinutes(53);
-          searchDate.setSeconds(0);
+          searchDate.setSeconds(0);0
+          searchDate.setMilliseconds(0);
 
           // if minute is 23 or earlier, use observation from previous hour.
           // i.e. start time at 15:22 will use observation of 14:53
