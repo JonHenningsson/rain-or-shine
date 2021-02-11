@@ -13,7 +13,7 @@ class MyWeather {
       'description',
       'temperature',
       'heatIndex',
-      'windchill',
+      'windChill',
       'relativeHumidity',
       'windSpeed',
     ];
@@ -59,7 +59,7 @@ class MyWeather {
         const tempUnits = {
           temperatureUnit: 'temperature',
           heatIndexUnit: 'heatIndex',
-          windchillUnit: 'windchill',
+          windChillUnit: 'windChill',
         };
         const windUnits = {
           windSpeedUnit: 'windSpeed',
@@ -160,8 +160,8 @@ class MyWeather {
               descr += `${w.temperature}${w.temperatureUnit}`;
             } else if ((attr === 'heatIndex') && (w.heatIndex)) {
               descr += `Feels like ${w.heatIndex}${w.heatIndexUnit}`;
-            } else if ((attr === 'windchill') && (w.windchill)) {
-              descr += `Feels like ${w.windchill}${w.windchillUnit}`;
+            } else if ((attr === 'windChill') && (w.windChill)) {
+              descr += `Feels like ${w.windChill}${w.windChillUnit}`;
             } else if ((attr === 'relativeHumidity') && (w.relativeHumidity)) {
               descr += `Humidity ${w.relativeHumidity}${w.relativeHumidityUnit}`;
             } else if ((attr === 'windSpeed') && (w.windSpeed || w.windSpeed === 0)) {

@@ -29,7 +29,7 @@ class Settings {
         available: ['℃', '℉', 'K'],
         default: '℉',
       },
-      windchillUnit: {
+      windChillUnit: {
         description: 'Unit to use for "feels like" temperature',
         name: 'Feels like temperature unit',
         available: ['℃', '℉', 'K'],
@@ -60,8 +60,8 @@ class Settings {
       windSpeedUnit: 'Wind speed unit',
       relativeHumidity: 'Relative humidity',
       relativeHumidityUnit: 'Relative humidity unit',
-      windchill: 'Windchill',
-      windchillUnit: 'Windchill unit',
+      windChill: 'Windchill',
+      windChillUnit: 'Windchill unit',
       heatIndex: 'Heat index',
       heatIndexUnit: 'Heat index unit',
     };
@@ -71,7 +71,7 @@ class Settings {
       weatherInfoPlacement: this.available.weatherInfoPlacement.default,
       temperatureUnit: this.available.temperatureUnit.default,
       heatIndexUnit: this.available.heatIndexUnit.default,
-      windchillUnit: this.available.windchillUnit.default,
+      windChillUnit: this.available.windChillUnit.default,
       windSpeedUnit: this.available.windSpeedUnit.default,
       status: this.available.status.default,
     };
