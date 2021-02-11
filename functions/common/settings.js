@@ -21,19 +21,25 @@ class Settings {
         description: 'Unit to use for temperature',
         name: 'Temperature unit',
         available: ['℃', '℉', 'K'],
-        default: '℃',
+        default: '℉',
       },
       heatIndexUnit: {
         description: 'Unit to use for "feels like" temperature',
         name: 'Feels like temperature unit',
         available: ['℃', '℉', 'K'],
-        default: '℃',
+        default: '℉',
+      },
+      windchillUnit: {
+        description: 'Unit to use for "feels like" temperature',
+        name: 'Feels like temperature unit',
+        available: ['℃', '℉', 'K'],
+        default: '℉',
       },
       windSpeedUnit: {
         description: 'Unit to use for wind speed',
         name: 'Wind speed unit',
         available: ['m/s', 'mph', 'km/h', 'kn'],
-        default: 'm/s',
+        default: 'mph',
       },
       status: {
         description: 'Enable or disable service for your activities',
@@ -65,6 +71,7 @@ class Settings {
       weatherInfoPlacement: this.available.weatherInfoPlacement.default,
       temperatureUnit: this.available.temperatureUnit.default,
       heatIndexUnit: this.available.heatIndexUnit.default,
+      windchillUnit: this.available.windchillUnit.default,
       windSpeedUnit: this.available.windSpeedUnit.default,
       status: this.available.status.default,
     };

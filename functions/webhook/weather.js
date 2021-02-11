@@ -13,6 +13,7 @@ class MyWeather {
       'description',
       'temperature',
       'heatIndex',
+      'windchill',
       'relativeHumidity',
       'windSpeed',
     ];
@@ -58,6 +59,7 @@ class MyWeather {
         const tempUnits = {
           temperatureUnit: 'temperature',
           heatIndexUnit: 'heatIndex',
+          windchillUnit: 'windchill',
         };
         const windUnits = {
           windSpeedUnit: 'windSpeed',
@@ -82,11 +84,13 @@ class MyWeather {
                   || (newUnit === '℉' && 'tempF')
                   || (newUnit === 'K' && 'tempK');
 
-                this.weather[tempUnits[key]] = Math.round(qty(qtyFrom).to(qtyTo).scalar);
-                this.weather[key] = newUnit;
+                if (val) {
+                  this.weather[tempUnits[key]] = Math.round(qty(qtyFrom).to(qtyTo).scalar);
+                  this.weather[key] = newUnit;
 
-                edebug('Old: %d %s', val, unit);
-                edebug('New: %d %s', this.weather[tempUnits[key]], this.weather[key]);
+                  edebug('Old: %d %s', val, unit);
+                  edebug('New: %d %s', this.weather[tempUnits[key]], this.weather[key]);
+                }
 
                 // windspeed unit conversion
                 // do not check if weather is present here. move to NWS class instead.
@@ -107,13 +111,15 @@ class MyWeather {
                   || (newUnit === 'km/h' && 'km/h')
                   || (newUnit === 'kn' && 'kn');
 
-                // one decimal for windspeed
-                const cVal = Math.round((qty(qtyFrom).to(qtyTo).scalar + Number.EPSILON) * 10) / 10;
-                this.weather[windUnits[key]] = cVal;
-                this.weather[key] = newUnit;
+                if (val) {
+                  // one decimal for windspeed
+                  const cVal = Math.round((qty(qtyFrom).to(qtyTo).scalar + Number.EPSILON) * 10) / 10;
+                  this.weather[windUnits[key]] = cVal;
+                  this.weather[key] = newUnit;
 
-                edebug('Old: %d %s', val, unit);
-                edebug('New: %d %s', this.weather[windUnits[key]], this.weather[key]);
+                  edebug('Old: %d %s', val, unit);
+                  edebug('New: %d %s', this.weather[windUnits[key]], this.weather[key]);
+                }
               }
             }
           }
@@ -154,6 +160,8 @@ class MyWeather {
               descr += `${w.temperature}${w.temperatureUnit}`;
             } else if ((attr === 'heatIndex') && (w.heatIndex)) {
               descr += `Feels like ${w.heatIndex}${w.heatIndexUnit}`;
+            } else if ((attr === 'windchill') && (w.windchill)) {
+              descr += `Feels like ${w.windchill}${w.windchillUnit}`;
             } else if ((attr === 'relativeHumidity') && (w.relativeHumidity)) {
               descr += `Humidity ${w.relativeHumidity}${w.relativeHumidityUnit}`;
             } else if ((attr === 'windSpeed') && (w.windSpeed || w.windSpeed === 0)) {
