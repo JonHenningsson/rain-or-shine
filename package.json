@@ -26,7 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "mystrava": "file:./functions/common/mystrava",
     "myuserdb": "file:./functions/common/myuserdb",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
