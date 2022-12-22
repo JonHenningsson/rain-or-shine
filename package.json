@@ -23,7 +23,7 @@
     "hugo-bin": "^0.60.0",
     "js-quantities": "^1.7.5",
     "jsonpath-plus": "^4.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mystrava": "file:./functions/common/mystrava",
     "myuserdb": "file:./functions/common/myuserdb",
     "validator": "^13.0.0"
